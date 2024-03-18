@@ -5,6 +5,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import CardActions from "@mui/material/CardActions";
 import "../styles.css";
 function ProductCard(props) {
@@ -35,9 +37,9 @@ function ProductCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions className="shopping-cart">
-        <Button variant="contained" endIcon={<AddShoppingCartIcon />}>
-          Add to Cart
-        </Button>
+        <Button startIcon={<RemoveIcon />}></Button>
+        <Typography>Num</Typography>
+        <Button endIcon={<AddIcon />}></Button>
       </CardActions>
     </Card>
   );
