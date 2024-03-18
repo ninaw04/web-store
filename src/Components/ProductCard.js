@@ -4,12 +4,22 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CardActions from "@mui/material/CardActions";
 import "../styles.css";
 function ProductCard(props) {
+  const [count, setCount] = React.useState(0);
+  function handleRemove() {
+    if (count > 0) {
+      setCount(count - 1);
+    } else {
+      alert("Cannot add negative items to cart");
+    }
+  }
+  function handleAdd() {
+    setCount(count + 1);
+  }
   return (
     <Card
       className="product-card"
@@ -23,7 +33,7 @@ function ProductCard(props) {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="300"
+          height="320"
           image={props.image}
           alt="Product Image"
         />
@@ -37,9 +47,12 @@ function ProductCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions className="shopping-cart">
-        <Button startIcon={<RemoveIcon />}></Button>
-        <Typography>Num</Typography>
-        <Button endIcon={<AddIcon />}></Button>
+        <Button
+          onClick={() => handleRemove()}
+          startIcon={<RemoveIcon />}
+        ></Button>
+        <Typography>{count}</Typography>
+        <Button onClick={() => handleAdd()} endIcon={<AddIcon />}></Button>
       </CardActions>
     </Card>
   );
