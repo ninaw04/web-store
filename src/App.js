@@ -1,12 +1,15 @@
 import './App.css';
 
+import Box from '@mui/material/Box'
+import Carousel from './components/Carousel';
+import NavBar from './components/NavBar';
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        WEB STORE
-      </header>
-    </div>
+    <Box sx={{ display: 'flex' }}>
+      <NavBar></NavBar>
+      <Carousel></Carousel>
+    </Box>
   );
 }
 
