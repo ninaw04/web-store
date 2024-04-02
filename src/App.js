@@ -1,4 +1,4 @@
-import React from "react";
+  import React from "react";
 import "./App.css";
 import img from "./Images/sampleProductImg.png";
 import ProductCard from "./Components/ProductCard";
