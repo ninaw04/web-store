@@ -23,6 +23,7 @@ function ProductCard(props) {
   return (
     <Card
       className="product-card"
+      elevation={10}
       sx={{
         transition: "all 0.5s ease-in-out",
         "&:hover": {
