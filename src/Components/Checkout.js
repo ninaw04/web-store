@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
 import CheckoutCard from "./CheckoutProductCard";
-import img from "../Images/sampleProductImg.png";
+// import img from "";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardContent from "@mui/joy/CardContent";
@@ -77,13 +77,13 @@ export default function CheckoutPage(props) {
             <CheckoutCard
               name="Sample 1"
               price={19.99}
-              image={img}
+              image={"assets/images/heels.jpg"}
               quantity={2}
             />
             <CheckoutCard
               name="Sample 2"
               price={19.99}
-              image={img}
+              image={"assets/images/lipstick.jpg"}
               quantity={1}
             />
             <Grid

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -8,7 +8,9 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CardActions from "@mui/material/CardActions";
 import "../styles.css";
+
 function ProductCard(props) {
+
   const [count, setCount] = React.useState(0);
   function handleRemove() {
     if (count > 0) {
@@ -20,6 +22,8 @@ function ProductCard(props) {
   function handleAdd() {
     setCount(count + 1);
   }
+  // const fileUrl = require("" + props.image);
+
   return (
     <Card
       className="product-card"
