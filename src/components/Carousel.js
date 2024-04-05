@@ -16,17 +16,17 @@ const images = [
   {
     label: 'Muscle Mommy',
     imgPath:
-      'muscle.jpeg',
+      'assets/images/muscle.jpeg',
   },
   {
     label: 'Muscle Melody',
     imgPath:
-      'melody.jpeg',
+      'assets/images/melody.jpeg',
   },
   {
     label: 'Muscle Mommy',
     imgPath:
-      'muscle.jpeg',
+      'assets/images/muscle.jpeg',
   }
 ];
 

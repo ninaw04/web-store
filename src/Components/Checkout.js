@@ -6,7 +6,7 @@ import CheckoutCard from "./CheckoutProductCard";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardContent from "@mui/joy/CardContent";
-import Checkbox from "@mui/joy/Checkbox";
+// import Checkbox from "@mui/joy/Checkbox";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
@@ -58,10 +58,10 @@ export default function CheckoutPage(props) {
                   <FormLabel>Card holder name</FormLabel>
                   <Input placeholder="Enter cardholder's full name" />
                 </FormControl>
-                <Checkbox
+                {/* <Checkbox
                   label="Save card"
                   sx={{ gridColumn: "1/-1", my: 1 }}
-                />
+                /> */}
                 <CardActions sx={{ gridColumn: "1/-1" }}>
                   <Button variant="solid" color="primary">
                     Add card

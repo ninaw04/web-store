@@ -20,13 +20,7 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(express.static(path.join(__dirname, "public")));
 const mysql = require("mysql");
-const connection = mysql.createConnection({
-  host: "",
-  user: "",
-  port: ,
-  password: "",
-  database: "",
-});
+//connection goes here
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
