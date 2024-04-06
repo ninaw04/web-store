@@ -9,13 +9,16 @@ import NavBar from './Components/NavBar';
 function App() {
   
   return (
-    <Box sx={{ display: 'row' }}>
+    <Box>
       <NavBar></NavBar>
-      <Carousel></Carousel>
-      <ProductPage />
-      <div>CHECKOUT PAGE IGNORE ABOVE STUFF</div>
-        <CheckoutPage />
+      <Box sx={{ display: 'row' }}>
+        <Carousel></Carousel>
+        <ProductPage />
+        <div>CHECKOUT PAGE IGNORE ABOVE STUFF</div>
+          <CheckoutPage />
+      </Box>
     </Box>
+    
   );
 }
 
