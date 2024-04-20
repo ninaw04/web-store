@@ -70,5 +70,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 
-### Dependency for Carousel
-```npm install --save react-swipeable-views --legacy-peer-deps```
+# Getting the backend started
+### `npm install express`
+- this installs the express backend server boiler plate?
