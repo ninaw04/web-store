@@ -73,3 +73,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 # Getting the backend started
 ### `npm install express`
 - this installs the express backend server boiler plate?
+
+# Dependency for carousel
+`npm install --save react-swipeable-views`
+- we will try to make our own carousel if we have time to remove this dependency
