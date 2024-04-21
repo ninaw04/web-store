@@ -27,11 +27,11 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.json("error");
 });
 
-app.listen(PORT, () => {
-  console.log(`connected on http://localhost:${PORT}`)
-})
+// app.listen(PORT, () => {
+//   console.log(`connected on http://localhost:${PORT}`)
+// })
 
 module.exports = app;
