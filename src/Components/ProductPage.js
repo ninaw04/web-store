@@ -5,7 +5,7 @@ export default function ProductPage() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function getProducts() {
-      const response = await fetch(`http://localhost:3000/products`);
+      const response = await fetch(`http://localhost:8800/products`);
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         window.alert(message);
