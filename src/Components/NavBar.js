@@ -14,6 +14,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Button, Divider, Drawer } from '@mui/material';
+import { Link } from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -157,7 +158,9 @@ export default function NavBar() {
                 <Typography>
                   Display said items as (small?) product cards
                 </Typography>
-                <Button variant="contained">Checkout</Button>
+                {/* <NavLink to = {"buyers/checkout"}>  */}
+                  <Button variant="contained"><Link to="buyers/checkout">Checkout</Link></Button>
+                {/* </NavLink> */}
               </Box>
             </Drawer>
             <IconButton

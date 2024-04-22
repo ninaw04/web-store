@@ -24,4 +24,9 @@ router.get("/products", (req, res) => {
 });
 
 
+router.get("/checkout", (req, res) => {
+  
+})
+
+
 module.exports = router;

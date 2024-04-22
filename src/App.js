@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import { Routes, Route } from "react-router-dom"
+
 import CheckoutPage from "./Components/Checkout";
 import ProductPage from "./Components/ProductPage";
 import Box from '@mui/material/Box'
 import Carousel from './Components/Carousel';
-import NavBar from './Components/NavBar';
-
+import HomePage from './Components/HomePage'
 function App() {
   
   return (
     <Box>
-      <NavBar></NavBar>
-      <Box sx={{ display: 'row' }}>
-        <Carousel></Carousel>
-        <ProductPage />
-        <div>CHECKOUT PAGE IGNORE ABOVE STUFF</div>
-          <CheckoutPage />
-      </Box>
+      
+        <Routes>
+
+          <Route exact path="/" element = {<HomePage />} />
+          <Route path = "buyers/checkout" element = {<CheckoutPage />} />
+          
+        </Routes>
     </Box>
     
   );

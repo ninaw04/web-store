@@ -14,13 +14,17 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import Link from "react-router-dom";
 
 export default function CheckoutPage(props) {
+  console.log("HERE IN checkout page")
   return (
     <div className="two-panel-checkout">
       <Grid container spacing={2}>
         <Grid className="payment-shipping-checkout" item xs={6}>
           <Box>
+            <div>CHECKOUT PAGE IGNORE ABOVE STUFF</div>
+
             <Typography>Your shipping Address is: bla bla</Typography>
             <Typography>PAYMENT</Typography>
             <Card
