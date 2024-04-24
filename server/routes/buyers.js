@@ -25,12 +25,23 @@ router.post('/', (req, res) => {
 /* GET specific buyer */
 router.get('/:id', (req,res) => {
   const {id} = req.params
-  const q = `SELECT * FROM Buyer where buyerID = ${id}`
+  const q = `SELECT * FROM Buyer WHERE buyerID = ${id}`
 
   pool.query(q, (err, data) => {
       if(err) return res.json(err)
       return res.json(data)
   })
+})
+
+/* GET buyer address */
+router.get('/:id/address', (req, res) => {
+  const {id} = req.params
+  const q = `SELECT * FROM addresses WHERE buyerID = ${id}`
+
+  pool.query(q, (err, data) => {
+    if(err) return res.json(err)
+    return res.json(data)
+})
 })
 
 /* GET cart */
