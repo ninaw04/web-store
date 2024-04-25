@@ -22,11 +22,6 @@ const images = [
     label: 'Muscle Melody',
     imgPath:
       'assets/images/melody.jpeg',
-  },
-  {
-    label: 'Muscle Mommy',
-    imgPath:
-      'assets/images/muscle.jpeg',
   }
 ];
 

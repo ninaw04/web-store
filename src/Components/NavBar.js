@@ -1,3 +1,4 @@
+import axios from 'axios'
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -13,8 +14,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Button, Divider, Drawer } from '@mui/material';
+import { Button, Drawer } from '@mui/material';
 import { Link } from "react-router-dom";
+import TextField from '@mui/material/TextField';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -68,6 +70,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [search, setSearch] = React.useState(null);
 
   const handleDrawerOpen = (event) => {
     setIsDrawerOpen(true);
@@ -86,6 +89,33 @@ export default function NavBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleChange = async e => {
+    console.log("inside handle change")
+    setSearch(e.target.value)
+  }
+
+  const handleClick = async e => {
+    console.log(search)
+    e.preventDefault()
+    try {
+      await axios.get(`http://localhost:3000/products/search/${search}`)
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  const _handleKeyDown = async e => {
+    if (e.key === 'Enter') {
+      console.log('do validate');
+      e.preventDefault()
+      try {
+        await axios.get(`http://localhost:3000/products/search/${search}`)
+      } catch(err) {
+        console.log(err)
+      }
+    }
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -133,13 +163,14 @@ export default function NavBar() {
             Web Store
           </Typography>
           <Search>
-            <SearchIconWrapper>
+            {/* <SearchIconWrapper>
               <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
+            </SearchIconWrapper> */}
+            {/* <StyledInputBase
+              placeholder="Search Products…"
               inputProps={{ 'aria-label': 'search' }}
-            />
+            /> */}
+            <TextField onChange={handleChange} onKeyDown={_handleKeyDown} placeholder="Search Products..."/>
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }} >
