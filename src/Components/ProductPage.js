@@ -22,7 +22,7 @@ export default function ProductPage() {
   function displayProducts() {
     return products.map((item) => {
       return (
-        <ProductCard name={item.productName} price={item.price} image={item.imgUrl} />
+        <ProductCard pid = {item.productId} name={item.productName} price={item.price} image={item.imgUrl} />
       )
     });
   }

@@ -1,33 +1,30 @@
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
+import * as React from "react";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MobileStepper from "@mui/material/MobileStepper";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import SwipeableViews from "react-swipeable-views";
+import { autoPlay } from "react-swipeable-views-utils";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: 'Muscle Mommy',
-    imgPath:
-      'assets/images/muscle.jpeg',
+    label: "Muscle Mommy",
+    imgPath: "assets/images/muscle.jpeg",
   },
   {
-    label: 'Muscle Melody',
-    imgPath:
-      'assets/images/melody.jpeg',
+    label: "Muscle Melody",
+    imgPath: "assets/images/melody.jpeg",
   },
   {
-    label: 'Muscle Mommy',
-    imgPath:
-      'assets/images/muscle.jpeg',
-  }
+    label: "Muscle Mommy",
+    imgPath: "assets/images/muscle.jpeg",
+  },
 ];
 
 function Carousel() {
@@ -48,22 +45,30 @@ function Carousel() {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    <Box
+      sx={{
+        maxWidth: '100vw',
+        flexGrow: 1,
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: 'red',
+      }}
+    >
       <Paper
         square
         elevation={0}
         sx={{
-          display: 'flex',
-          alignItems: 'center',
+          display: "flex",
+          alignItems: "center",
           height: 50,
           pl: 2,
-          bgcolor: 'background.default',
+          bgcolor: "background.default",
         }}
       >
         <Typography>{images[activeStep].label}</Typography>
       </Paper>
       <AutoPlaySwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
@@ -74,11 +79,13 @@ function Carousel() {
               <Box
                 component="img"
                 sx={{
-                  height: 255,
-                  display: 'block',
-                  maxWidth: 400,
-                  overflow: 'hidden',
-                  width: '100%',
+                  height: 637.5,
+                  display: "block",
+                  maxWidth: 1000,
+                  overflow: "hidden",
+                  width: "100%",
+                  alignContent: 'flex-end', 
+                  backgroundColor: "blue",
                 }}
                 src={step.imgPath}
                 alt={step.label}
@@ -98,7 +105,7 @@ function Carousel() {
             disabled={activeStep === maxSteps - 1}
           >
             Next
-            {theme.direction === 'rtl' ? (
+            {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
             ) : (
               <KeyboardArrowRight />
@@ -107,7 +114,7 @@ function Carousel() {
         }
         backButton={
           <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? (
+            {theme.direction === "rtl" ? (
               <KeyboardArrowRight />
             ) : (
               <KeyboardArrowLeft />
