@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ProductCard from "./ProductCard";
+import {RangeContext} from './HomePage.js'
+import { Button, Typography } from "@mui/material";
 
 export default function ProductPage() {
+  const [range, setRange] = useContext(RangeContext);
+
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function getProducts() {
@@ -22,13 +26,20 @@ export default function ProductPage() {
   function displayProducts() {
     return products.map((item) => {
       return (
-        <ProductCard pid = {item.productId} name={item.productName} price={item.price} image={item.imgUrl} />
-      )
+        <ProductCard
+          pid={item.productId}
+          name={item.productName}
+          price={item.price}
+          image={item.imgUrl}
+        />
+      );
     });
   }
   return (
     <div className="products-list">
+      <Typography> Min Range ($): {range[0]}</Typography>
+      <Typography> Max Range ($): {range[1]}</Typography>
       {displayProducts()}
     </div>
-  )
+  );
 }
