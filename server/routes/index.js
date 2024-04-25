@@ -16,7 +16,7 @@ router.get("/", function (req, res, next) {
 router.get("/products", (req, res) => {
   pool.query("SELECT * FROM products", function (err, result, fields) {
     if (err) {
-      console.error("Could not fetch data from products table");
+      console.error("SQL ERROR /products");
       return
     }
     res.json(result);
@@ -45,12 +45,11 @@ router.get("/products/search/:searchItem", (req, res) => {
   })
 });
 //ASSUME THAT MINCOST AND MAXCOST ARE PROVIDED. By default they should be between 0 and the 1000 or something
-router.get("/products/filter", (req, res) => {
-  console.log(req.body);
-  if (req.body.minCost && req.body.maxCost){ //if both minCost and maxCost are provided
-    pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.body.minCost} and ${req.body.maxCost}`, function(err, result, fields) {
+router.get("/products/filter/:min/:max", (req, res) => {
+  if (req.params.min && req.params.max){ //if both minCost and maxCost are provided
+    pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max}`, function(err, result, fields) {
       if (err) {
-        console.error("SQL ERROR");
+        console.error("SQL ERROR /products/filter");
         return 
       }
       console.log(result)

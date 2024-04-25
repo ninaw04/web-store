@@ -20,6 +20,7 @@ function ProductCard(props) {
     }
   }
   function handleAdd() {
+    
     setCount(count + 1);
   }
   // const fileUrl = require("" + props.image);
@@ -35,6 +36,7 @@ function ProductCard(props) {
         },
       }}
     >
+
       <CardActionArea>
         <CardMedia
           component="img"
