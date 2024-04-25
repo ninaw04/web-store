@@ -90,31 +90,27 @@ export default function NavBar() {
     setAnchorEl(null);
   };
 
-  const handleChange = async e => {
-    console.log("inside handle change")
-    setSearch(e.target.value)
-  }
-
   const handleClick = async e => {
     console.log(search)
     e.preventDefault()
     try {
-      await axios.get(`http://localhost:3000/products/search/${search}`)
+      const res = await axios.get(`http://localhost:3000/products/search/${search}`)
+      setProducts(res.data)
     } catch(err) {
       console.log(err)
     }
   }
 
-  const _handleKeyDown = async e => {
-    if (e.key === 'Enter') {
-      console.log('do validate');
-      e.preventDefault()
-      try {
-        await axios.get(`http://localhost:3000/products/search/${search}`)
-      } catch(err) {
-        console.log(err)
+  const Input = () => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        // console.log(event.target.value)
+        setSearch(event.target.value)
+        handleClick()
       }
     }
+  
+    return <TextField type="text" placeholder="Search products..." onKeyDown={handleKeyDown} />
   }
 
   const menuId = 'primary-search-account-menu';
@@ -170,7 +166,8 @@ export default function NavBar() {
               placeholder="Search Products…"
               inputProps={{ 'aria-label': 'search' }}
             /> */}
-            <TextField onChange={handleChange} onKeyDown={_handleKeyDown} placeholder="Search Products..."/>
+            {/* <TextField onChange={handleChange} onKeyDown={handleKeyDown} placeholder="Search Products..."/> */}
+            <Input/>
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }} >
