@@ -8,8 +8,13 @@ export default function ProductPage() {
 
   const [products, setProducts] = useState([]);
   useEffect(() => {
+    console.log("rerendered")
     async function getProducts() {
-      const response = await fetch(`http://localhost:3000/products`);
+      const data = {
+        minCost: range[0],
+        maxCost: range[1]
+      }
+      const response = await fetch(`http://localhost:3000/products/filter/${range[0]}/${range[1]}`);
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
         window.alert(message);
@@ -20,7 +25,7 @@ export default function ProductPage() {
     }
     getProducts();
     return;
-  }, [products.length]);
+  }, [range]);
 
   console.log(products);
   function displayProducts() {
@@ -37,8 +42,6 @@ export default function ProductPage() {
   }
   return (
     <div className="products-list">
-      <Typography> Min Range ($): {range[0]}</Typography>
-      <Typography> Max Range ($): {range[1]}</Typography>
       {displayProducts()}
     </div>
   );
