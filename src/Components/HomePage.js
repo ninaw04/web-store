@@ -10,7 +10,7 @@ export const FilterContext = createContext();
 export const SearchContext = createContext();
 
 export default function HomePage(props) {
-  const [search, setSearch] = useState({});
+  const [search, setSearch] = useState("");
   const [range, setRange] = useState([0, 1000]);
 
   return (

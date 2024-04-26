@@ -33,7 +33,6 @@ router.get("/products/product/:productId", (req, res) => {
 });
 
 router.get("/products/search/:searchItem", (req, res) => {
-  console.log(req.query);
 
   pool.query(`SELECT * FROM products WHERE productName LIKE '${req.params.searchItem}%'`, function(err, result, fields) {
     if (err) {
