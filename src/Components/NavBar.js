@@ -107,6 +107,7 @@ export default function NavBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }} >
+            <Button variant="text" color="inherit" href='/login' >Sign in</Button>
             <IconButton edge='start' color="inherit" aria-label="open shopping cart"  onClick={handleDrawerOpen}>
               {/* cartAmount, setCartAmount = 4 
               useEffect [cartAmount] */}
