@@ -18,13 +18,10 @@ const images = [
     imgPath: "assets/images/muscle.jpeg",
   },
   {
-    label: "Muscle Melody",
-    imgPath: "assets/images/melody.jpeg",
-  },
-  {
-    label: "Muscle Mommy",
-    imgPath: "assets/images/muscle.jpeg",
-  },
+    label: 'Muscle Melody',
+    imgPath:
+      'assets/images/melody.jpeg',
+  }
 ];
 
 function Carousel() {

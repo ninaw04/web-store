@@ -1,20 +1,12 @@
 import * as React from 'react';
+import { AppBar, Drawer, Box, Button, Toolbar, IconButton, Typography, Badge, MenuItem, Menu, TextField } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Button, Divider, Drawer } from '@mui/material';
 import { Link } from "react-router-dom";
+
+import { SearchContext } from './HomePage.js'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -32,42 +24,10 @@ const Search = styled('div')(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end'
-}))
-
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [search, setSearch] = React.useContext(SearchContext)
 
   const handleDrawerOpen = (event) => {
     setIsDrawerOpen(true);
@@ -86,6 +46,16 @@ export default function NavBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const Input = () => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        setSearch(event.target.value)
+      }
+    }
+  
+    return <TextField type="text" placeholder="Search products..." onKeyDown={handleKeyDown} />
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -133,13 +103,7 @@ export default function NavBar() {
             Web Store
           </Typography>
           <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <Input/>
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }} >

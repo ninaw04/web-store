@@ -9,7 +9,6 @@ let pool = require('../database').pool
 router.get("/", function (req, res, next) {
   console.log("rarhhhhhhhh")
   res.json("backend for muscle mommies :)))")
-  // res.render("index", { title: "Express" });
 });
 
 /* GET products */
@@ -33,7 +32,6 @@ router.get("/products/product/:productId", (req, res) => {
 });
 
 router.get("/products/search/:searchItem", (req, res) => {
-  console.log(req.query);
 
   pool.query(`SELECT * FROM products WHERE productName LIKE '${req.params.searchItem}%'`, function(err, result, fields) {
     if (err) {
@@ -45,10 +43,9 @@ router.get("/products/search/:searchItem", (req, res) => {
   })
 });
 //ASSUME THAT MINCOST AND MAXCOST ARE PROVIDED. By default they should be between 0 and the 1000 or something
-router.get("/products/filter", (req, res) => {
-  console.log(req.body);
-  if (req.body.minCost && req.body.maxCost){ //if both minCost and maxCost are provided
-    pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.body.minCost} and ${req.body.maxCost}`, function(err, result, fields) {
+router.get("/products/filter/:min/:max", (req, res) => {
+  if (req.params.min && req.params.max){ //if both minCost and maxCost are provided
+    pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max}`, function(err, result, fields) {
       if (err) {
         console.error("SQL ERROR /products/filter");
         return 
@@ -61,6 +58,20 @@ router.get("/products/filter", (req, res) => {
 
   
 });
+
+router.get("/products/filter/:min/:max/:search", (req, res) => {
+  if (req.params.min && req.params.max && req.params.search){ //if both minCost and maxCost are provided
+    pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND productName LIKE '%${req.params.search}%'`, 
+                function(err, result, fields) {
+      if (err) {
+        console.error("SQL ERROR /products/filter/search");
+        return 
+      }
+      console.log(result)
+      res.json(result);
+    })
+  } 
+})
 
 router.get("/checkout", (req, res) => {
   
