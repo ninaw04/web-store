@@ -61,6 +61,20 @@ router.get("/products/filter/:min/:max", (req, res) => {
   
 });
 
+router.get("/products/filter/:min/:max/:search", (req, res) => {
+  if (req.params.min && req.params.max && req.params.search){ //if both minCost and maxCost are provided
+    pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND productName LIKE '%${req.params.search}%'`, 
+                function(err, result, fields) {
+      if (err) {
+        console.error("SQL ERROR /products/filter/search");
+        return 
+      }
+      console.log(result)
+      res.json(result);
+    })
+  } 
+})
+
 router.get("/checkout", (req, res) => {
   
 })

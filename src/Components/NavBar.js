@@ -18,6 +18,8 @@ import { Button, Drawer } from '@mui/material';
 import { Link } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 
+import { SearchContext } from './HomePage.js'
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -34,43 +36,12 @@ const Search = styled('div')(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end'
-}))
-
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-  const [search, setSearch] = React.useState(null);
+  const [input, setInput] = React.useState(null);
+
+  const [search, setSearch] = React.useContext(SearchContext)
 
   const handleDrawerOpen = (event) => {
     setIsDrawerOpen(true);
@@ -91,11 +62,11 @@ export default function NavBar() {
   };
 
   const handleClick = async e => {
-    console.log(search)
+    console.log(input)
     e.preventDefault()
     try {
       const res = await axios.get(`http://localhost:3000/products/search/${search}`)
-      setProducts(res.data)
+      setSearch(res.data)
     } catch(err) {
       console.log(err)
     }
@@ -105,8 +76,9 @@ export default function NavBar() {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
         // console.log(event.target.value)
+        // setInput(event.target.value)
         setSearch(event.target.value)
-        handleClick()
+        // handleClick()
       }
     }
   
