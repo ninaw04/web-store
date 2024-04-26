@@ -1,22 +1,10 @@
-import axios from 'axios'
 import * as React from 'react';
+import { AppBar, Drawer, Box, Button, Toolbar, IconButton, Typography, Badge, MenuItem, Menu, TextField } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Button, Drawer } from '@mui/material';
 import { Link } from "react-router-dom";
-import TextField from '@mui/material/TextField';
 
 import { SearchContext } from './HomePage.js'
 
@@ -39,8 +27,6 @@ const Search = styled('div')(({ theme }) => ({
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-  const [input, setInput] = React.useState(null);
-
   const [search, setSearch] = React.useContext(SearchContext)
 
   const handleDrawerOpen = (event) => {
@@ -61,24 +47,10 @@ export default function NavBar() {
     setAnchorEl(null);
   };
 
-  const handleClick = async e => {
-    console.log(input)
-    e.preventDefault()
-    try {
-      const res = await axios.get(`http://localhost:3000/products/search/${search}`)
-      setSearch(res.data)
-    } catch(err) {
-      console.log(err)
-    }
-  }
-
   const Input = () => {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
-        // console.log(event.target.value)
-        // setInput(event.target.value)
         setSearch(event.target.value)
-        // handleClick()
       }
     }
   
@@ -131,14 +103,6 @@ export default function NavBar() {
             Web Store
           </Typography>
           <Search>
-            {/* <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper> */}
-            {/* <StyledInputBase
-              placeholder="Search Products…"
-              inputProps={{ 'aria-label': 'search' }}
-            /> */}
-            {/* <TextField onChange={handleChange} onKeyDown={handleKeyDown} placeholder="Search Products..."/> */}
             <Input/>
           </Search>
           <Box sx={{ flexGrow: 1 }} />

@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext, createContext } from "react";
+import React, { useState, createContext } from "react";
 import Carousel from "./Carousel";
 import ProductPage from "./ProductPage";
 import Box from "@mui/material/Box";
 import NavBar from "./NavBar";
 import Filter from "./Filter";
-import { create } from "@mui/material/styles/createTransitions";
 export const RangeContext = createContext();
 export const FilterContext = createContext();
 export const SearchContext = createContext();

@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import ProductCard from "./ProductCard";
 import {RangeContext} from './HomePage.js'
 import { SearchContext } from "./HomePage.js";
-import { Button, Typography } from "@mui/material";
 
 export default function ProductPage() {
   const [range, setRange] = useContext(RangeContext);

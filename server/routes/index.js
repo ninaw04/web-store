@@ -9,7 +9,6 @@ let pool = require('../database').pool
 router.get("/", function (req, res, next) {
   console.log("rarhhhhhhhh")
   res.json("backend for muscle mommies :)))")
-  // res.render("index", { title: "Express" });
 });
 
 /* GET products */
