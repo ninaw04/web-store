@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
 import CheckoutCard from "./CheckoutProductCard";
@@ -12,17 +13,56 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function CheckoutPage(props) {
-  console.log("HERE IN checkout page")
+  console.log("HERE IN checkout page");
+  const [user, setUser] = React.useState(null);
+  const [street, setStreet] = useState("");
+  const [aptNumber, setAptNumber] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const authCookie = Cookies.get("auth");
+    if (authCookie) {
+      const userInfo = JSON.parse(authCookie);
+      setUser(userInfo);
+      getAddress(userInfo.id);
+    }
+  }, []);
+
+  async function getAddress(bid) {
+    const response = await fetch(`http://localhost:3000/buyers/${bid}/address`);
+
+    console.log(bid);
+    const address = await response.json();
+    console.log(address)
+    setStreet(address[0].streetAdd);
+    setAptNumber(address[0].aptNum);
+    setCountry(address[0].country);
+    setState(address[0].state);
+    setCity(address[0].city);
+    setZipcode(address[0].zip);
+  }
+ 
+  function displayCheckoutProducts() {
+
+  }
   return (
     <div className="two-panel-checkout">
       <Grid container spacing={2}>
         <Grid className="payment-shipping-checkout" item xs={6}>
           <Box>
-            <div>CHECKOUT PAGE IGNORE ABOVE STUFF</div>
-
-            <Typography>Your shipping Address is: bla bla</Typography>
+            <Box>
+              <Typography>Your shipping Address is:</Typography>
+              <Typography>{aptNumber}, {street}</Typography>
+              <Typography>{city},  {state}, {zipcode}, {country}</Typography>
+            </Box>
             <Typography>PAYMENT</Typography>
             <Card
               variant="outlined"
