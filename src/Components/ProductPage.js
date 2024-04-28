@@ -5,6 +5,7 @@ import React, { useEffect, useState, useContext } from "react";
 import ProductCard from "./ProductCard";
 import { RangeContext } from "./HomePage.js";
 import { SearchContext } from "./HomePage.js";
+import Box from "@mui/material/Box";
 
 export default function ProductPage() {
   const [range, setRange] = useContext(RangeContext);
@@ -49,7 +50,20 @@ export default function ProductPage() {
   return (
     <div>
       <Carousel></Carousel>
-      <Filter />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          p: 2, // padding
+          position: 'sticky',
+          top:0,
+          zIndex: 9999,
+          backgroundColor: 'rgba(255, 255, 255, 0.8)'
+        }}
+      >
+        <Filter />
+      </Box>
       <div className="products-list">{displayProducts()}</div>
     </div>
   );
