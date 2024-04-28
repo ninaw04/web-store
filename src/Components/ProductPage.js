@@ -26,7 +26,6 @@ export default function ProductPage() {
     getProducts();
     return;
   }, [range, products]);
-
   function displayProducts() {
     return products.map((item) => {
       return (

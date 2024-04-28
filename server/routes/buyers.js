@@ -109,16 +109,16 @@ router.get("/:id/cart", (req, res) => {
 /*POST item to cart*/
 router.post("/cart", (req, res) => {
   // const { buyerId, productId } = ;
-  console.log(req.body)
+  console.log(req.body);
   pool.query(
-    `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId})`,
+    `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, 1)`,
     (err, data) => {
       if (err) return res.json(err);
       return res.json(data);
     }
   );
 });
-router.delete("/cart/:buyerId/:productId", (req,res) => {
+router.delete("/cart/:buyerId/:productId", (req, res) => {
   pool.query(
     `DELETE FROM cart where buyerId = ${req.params.buyerId} and productId = ${req.params.productId}`,
     (err, data) => {
@@ -126,5 +126,14 @@ router.delete("/cart/:buyerId/:productId", (req,res) => {
       return res.json(data);
     }
   );
-})
+});
+router.put("/cart", (req, res) => {
+  pool.query(
+    `UPDATE cart set amount = ${req.body.amount} where buyerId = ${req.body.buyerId} and productId = ${req.body.productId}`,
+    (err, data) => {
+      if (err) return res.json(err);
+      return res.json(data);
+    }
+  );
+});
 module.exports = router;
