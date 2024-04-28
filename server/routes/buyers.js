@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var cookieParser = require('cookie-parser');
+var bcrypt = require('bcrypt');
+
+router.use(cookieParser());
 
 let pool = require('../database').pool
 
@@ -21,9 +25,13 @@ router.post('/buyer', (req, res) => {
 });
 
 //Make a new user with login information
-router.post('/user', (req, res) => {
+router.post('/user', async (req, res) => {
   const q = 'INSERT INTO user (buyerID, email, password) VALUES (?, ?, ?)'
-  const input = [req.body.id, req.body.email, req.body.password]
+  const {id, email, password} = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 5);
+  console.log(hashedPassword)
+  const input = [id, email, password]
 
   pool.query(q, input, (err, data) => {
     if (err) return res.json(err);
@@ -45,10 +53,22 @@ router.post('/address', (req, res) => {
 //Log in operation
 router.post('/login', (req, res) => {
   const q = 'SELECT * FROM user WHERE email = ? AND password = ?'
-  const input = [req.body.email, req.body.password]
+  const {email, password} = req.body
+  const input = [email, password]
 
-  pool.query(q, input, (err, data) => {
-    
+  pool.query(q, input, async (err, data) => {
+    if (err) return res.json(err);
+    if(data.length > 0) {
+      //const valid = await bcrypt.compare(password, data[0].password)
+      const buyerId = data[0].buyerID
+      console.log('log in successful with', buyerId)
+      return res.json({Status: "Success", id: buyerId})
+      // if (valid) {
+      //   return res.json({status: "Success", id: buyerId})
+      // } 
+    } else {
+      return res.json({Message: "No Records existed"});
+    }
   })
 })
 

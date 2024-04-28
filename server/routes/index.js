@@ -38,7 +38,7 @@ router.get("/products/search/:searchItem", (req, res) => {
       console.error("SQL ERROR products/search/:searchItem");
       return 
     }
-    console.log(result)
+    //console.log(result)
     res.json(result);
   })
 });
@@ -50,7 +50,7 @@ router.get("/products/filter/:min/:max", (req, res) => {
         console.error("SQL ERROR /products/filter");
         return 
       }
-      console.log(result)
+      //console.log(result)
       res.json(result);
     })
   } 
@@ -67,7 +67,7 @@ router.get("/products/filter/:min/:max/:search", (req, res) => {
         console.error("SQL ERROR /products/filter/search");
         return 
       }
-      console.log(result)
+      //console.log(result)
       res.json(result);
     })
   } 
