@@ -8,7 +8,6 @@ export default function ProductPage() {
   const [search, setSearch] = useContext(SearchContext);
   const [products, setProducts] = useState([]);
   useEffect(() => {
-    console.log("rerendered")
     async function getProducts() {
       const data = {
         minCost: range[0],
@@ -28,7 +27,6 @@ export default function ProductPage() {
     return;
   }, [range, products]);
 
-  console.log(products);
   function displayProducts() {
     return products.map((item) => {
       return (
