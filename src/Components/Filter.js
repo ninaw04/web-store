@@ -32,10 +32,6 @@ export default function Filter() {
       </Box>
       <Typography> Min Range ($): {value[0]}</Typography>
       <Typography> Max Range ($): {value[1]}</Typography>
-
-      <Button variant="outlined">
-        Filter!
-      </Button>
     </Box>
   );
 }
