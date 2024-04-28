@@ -65,18 +65,14 @@ router.post("/login", (req, res) => {
   const { email, password } = req.body;
   const input = [email, password];
 
-  pool.query(q, input, async (err, data) => {
+  pool.query(q, input, (err, data) => {
     if (err) return res.json(err);
     if (data.length > 0) {
-      //const valid = await bcrypt.compare(password, data[0].password)
       const buyerId = data[0].buyerID;
       console.log("log in successful with", buyerId);
       return res.json({ Status: "Success", id: buyerId });
-      // if (valid) {
-      //   return res.json({status: "Success", id: buyerId})
-      // }
     } else {
-      return res.json({ Message: "No Records existed" });
+      return res.json({ Message: "Failed" });
     }
   });
 });

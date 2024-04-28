@@ -31,15 +31,17 @@ function Register() {
     }
 
     async function registerUser() {
-        try {
-            const response = await axios.post(`http://localhost:3000/buyers/buyer`, {fName: fname, lName:lname});
-            const id = response.data.id;
-            await axios.post(`http://localhost:3000/buyers/user`, {id: id, email: email, password: password});
-            await axios.post(`http://localhost:3000/buyers/address`, {id: id, country: country, streetAdd: street, aptNum: aptNumber, city: city, state: state, zip: zipcode});
-        } catch (error) {
-            console.log(error);
+        if (fname && lname && email && password && street && country&& state && city && zipcode) {
+            try {
+                const response = await axios.post(`http://localhost:3000/buyers/buyer`, {fName: fname, lName:lname});
+                const id = response.data.id;
+                await axios.post(`http://localhost:3000/buyers/user`, {id: id, email: email, password: password});
+                await axios.post(`http://localhost:3000/buyers/address`, {id: id, country: country, streetAdd: street, aptNum: aptNumber, city: city, state: state, zip: zipcode});
+            } catch (error) {
+                console.log(error);
+            }
+            setBlank();
         }
-        setBlank();
     }    
 
     function setBlank() {
@@ -67,14 +69,17 @@ function Register() {
                 <h1>Create your account</h1>
             </div>
             <div className='right' >
-                <TextField label="First Name" variant="outlined" value={fname} onChange={(event) => setFname(event.target.value)} />
-                <TextField label="Last Name" variant="outlined" value={lname} onChange={(event) => setLname(event.target.value)} />
-                <TextField label="Email" variant="outlined" value={email} onChange={(event) => setEmail(event.target.value)} />
+                {fname ? (
+                    <TextField label="First Name" variant="outlined" value={fname} onChange={(event) => setFname(event.target.value)} required />
+                ): <TextField error label="First Name" helperText="Can't be empty." value={fname} onChange={(event) => setFname(event.target.value)} />}
                 
-                <FormControl variant="outlined">
+                <TextField label="Last Name" variant="outlined" value={lname} onChange={(event) => setLname(event.target.value)} required />
+                <TextField label="Email" variant="outlined" value={email} onChange={(event) => setEmail(event.target.value)} required />
+                
+                <FormControl variant="outlined"> 
                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                     <OutlinedInput
-                        id="outlined-adornment-password"
+                    
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
                             <InputAdornment position="end">
@@ -94,12 +99,12 @@ function Register() {
                 </FormControl>
 
                 <h3>Shipping Address</h3>
-                <TextField label="Street Address" variant="outlined" value={street} onChange={(event) => setStreet(event.target.value)} />
-                <TextField label="Apartment Number(if apply)" variant="outlined" value={aptNumber} onChange={(event) => setAptNumber(event.target.value)} />
-                <TextField label="Country" variant="outlined" value={country} onChange={(event) => setCountry(event.target.value)} />
-                <TextField label="State" variant="outlined" value={state} onChange={(event) => setState(event.target.value)} />
-                <TextField label="City" variant="outlined" value={city} onChange={(event) => setCity(event.target.value)} />
-                <TextField  label="Zip code" variant="outlined" value={zipcode} onChange={(event) => setZipcode(event.target.value)} />
+                <TextField label="Street Address" variant="outlined" value={street} onChange={(event) => setStreet(event.target.value)} required />
+                <TextField label="Apartment Number(if applicable)" variant="outlined" value={aptNumber} onChange={(event) => setAptNumber(event.target.value)} />
+                <TextField label="Country" variant="outlined" value={country} onChange={(event) => setCountry(event.target.value)} required />
+                <TextField label="State" variant="outlined" value={state} onChange={(event) => setState(event.target.value)} required />
+                <TextField label="City" variant="outlined" value={city} onChange={(event) => setCity(event.target.value)} required />
+                <TextField  label="Zip code" variant="outlined" value={zipcode} onChange={(event) => setZipcode(event.target.value)} required />
                 <Button variant="outlined" onClick={registerUser} >Register</Button>
             </div>
         </div>
