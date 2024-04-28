@@ -3,7 +3,8 @@ var path = require("path");
 const express = require("express")
 const app = express();
 const cors = require("cors");
-const PORT = 8800;
+var cookieParser = require('cookie-parser');
+//const PORT = 8800;
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/buyers");
@@ -11,9 +12,10 @@ var usersRouter = require("./routes/buyers");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 app.use("/", indexRouter);
 app.use("/buyers", usersRouter);
-app.use(cors());
 
 app.use(function (req, res, next) {
   next(createError(404));

@@ -1,12 +1,13 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import { AppBar, Drawer, Box, Button, Toolbar, IconButton, Typography, Badge, MenuItem, Menu, TextField } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link } from "react-router-dom";
-
 import { SearchContext } from './HomePage.js'
+import Cookies from 'js-cookie';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -27,7 +28,8 @@ const Search = styled('div')(({ theme }) => ({
 export default function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
-  const [search, setSearch] = React.useContext(SearchContext)
+  const [search, setSearch] = React.useContext(SearchContext);
+  const [user, setUser] = React.useState(null);
 
   const handleDrawerOpen = (event) => {
     setIsDrawerOpen(true);
@@ -79,7 +81,19 @@ export default function NavBar() {
     </Menu>
   );
 
+  useEffect( () => {
+    const authCookie = Cookies.get('auth');
+    if(authCookie) {
+      const userInfo = JSON.parse(authCookie);
+      setUser(userInfo);
+    }
+  })
 
+  const handleLogout = () => {
+    Cookies.remove('auth');
+    sessionStorage.removeItem('auth');
+    setUser(null);
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -98,7 +112,10 @@ export default function NavBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }} >
-            <Button variant="text" color="inherit" href='/login' >Sign in</Button>
+            {user == null ? (
+              <Button variant="text" color="inherit" href='/login' >Sign in</Button>
+            ): <Button variant="text" color="inherit" onClick={handleLogout} >Sign out</Button>}
+            
             <IconButton edge='start' color="inherit" aria-label="open shopping cart"  onClick={handleDrawerOpen}>
               {/* cartAmount, setCartAmount = 4 
               useEffect [cartAmount] */}
