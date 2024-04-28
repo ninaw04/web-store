@@ -30,14 +30,10 @@ const images = [
   }
 ];
 
-function Carousel() {
+function Carousel(props) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
-
-  const handleCategoryFilter = () => {
-
-  }
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -96,7 +92,7 @@ function Carousel() {
                 }}
                 src={step.imgPath}
                 alt={step.label}
-                onClick={handleCategoryFilter}
+                onClick={() => props.handleCategoryFilter(step.category)}
               />
             ) : null}
           </div>
