@@ -73,6 +73,31 @@ router.get("/products/filter/:min/:max/:search", (req, res) => {
   } 
 })
 
+router.get("/products/filter/:min/:max/category/:category", (req, res) => {
+  if (req.params.min && req.params.max && req.params.search){ //if both minCost and maxCost are provided
+    pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND category = '${req.params.category}'`, 
+                function(err, result, fields) {
+      if (err) {
+        console.error("SQL ERROR filtering by category");
+        return 
+      }
+      console.log(result)
+      res.json(result);
+    })
+  } 
+})
+
+// router.get("/products/filter/:min/:max/:category", (req, res) => {
+//   pool.query(`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND category = ${req.params.category}`, function(err, result, fields) {
+//     if (err) {
+//       console.error("error filtering by type")
+//       return
+//     }
+//     console.log(result)
+//     res.json(result)
+//   })
+// })
+
 router.get("/checkout", (req, res) => {
   
 })

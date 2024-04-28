@@ -16,11 +16,17 @@ const images = [
   {
     label: "Muscle Mommy",
     imgPath: "assets/images/muscle.jpeg",
+    category: "makeup"
   },
   {
     label: 'Muscle Melody',
-    imgPath:
-      'assets/images/melody.jpeg',
+    imgPath: 'assets/images/melody.jpeg',
+    category: "accessory"
+  },
+  {
+    label: 'Clothes',
+    imgPath: 'assets/images/watch-img.jpg',
+    category: "clothing"
   }
 ];
 
@@ -28,6 +34,10 @@ function Carousel() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
+
+  const handleCategoryFilter = () => {
+
+  }
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -86,6 +96,7 @@ function Carousel() {
                 }}
                 src={step.imgPath}
                 alt={step.label}
+                onClick={handleCategoryFilter}
               />
             ) : null}
           </div>

@@ -2,11 +2,9 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
 import CheckoutCard from "./CheckoutProductCard";
-// import img from "";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardContent from "@mui/joy/CardContent";
-// import Checkbox from "@mui/joy/Checkbox";
 import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
@@ -14,7 +12,6 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import Link from "react-router-dom";
 
 export default function CheckoutPage(props) {
   console.log("HERE IN checkout page")
