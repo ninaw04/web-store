@@ -14,18 +14,18 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: "Muscle Mommy",
-    imgPath: "assets/images/muscle.jpeg",
+    label: "Makeup",
+    imgPath: "assets/images/makeup.jpeg",
     category: "makeup"
   },
   {
-    label: 'Muscle Melody',
+    label: 'Accessory',
     imgPath: 'assets/images/melody.jpeg',
     category: "accessory"
   },
   {
     label: 'Clothes',
-    imgPath: 'assets/images/watch-img.jpg',
+    imgPath: 'assets/images/clothes.png',
     category: "clothing"
   }
 ];
