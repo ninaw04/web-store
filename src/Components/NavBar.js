@@ -87,7 +87,7 @@ export default function NavBar() {
       const userInfo = JSON.parse(authCookie);
       setUser(userInfo);
     }
-  })
+  }, [])
 
   const handleLogout = () => {
     Cookies.remove('auth');

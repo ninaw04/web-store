@@ -52,7 +52,7 @@ export default function ProductPage() {
     }
     getProducts();
     return;
-  }, [range, products, category]);
+  }, [range, search, category]);
 
   // console.log(products);
   function displayProducts() {
