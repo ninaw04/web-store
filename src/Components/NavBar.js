@@ -133,6 +133,7 @@ export default function NavBar() {
   function displayProducts() {
     console.log("inside display rpoducts");
     console.log(cartProducts)
+
     return cartProducts.map((item) => {
       return (
         <CheckoutCard
@@ -140,6 +141,7 @@ export default function NavBar() {
           name={item.productName}
           price={item.price}
           image={item.imgUrl}
+          quanity={item.amount}
         />
       );
     });
