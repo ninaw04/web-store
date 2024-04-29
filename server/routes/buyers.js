@@ -92,9 +92,7 @@ router.get("/:id/address", (req, res) => {
 router.get("/:id/cart", (req, res) => {
   // select cart and products from cart
   const { id } = req.params;
-  const q = `SELECT * FROM cart LEFT JOIN products
-            ON cart.productID = products.productID
-            WHERE buyerID = ${id}`;
+  const q = `SELECT * FROM cart LEFT JOIN products ON cart.productID = products.productID WHERE buyerID = ${id}`;
 
   pool.query(q, (err, data) => {
     if (err) return res.json(err);

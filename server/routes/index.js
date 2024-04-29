@@ -35,19 +35,6 @@ router.get("/products/product/:productId", (req, res) => {
   );
 });
 
-// router.get("/products/search/:searchItem", (req, res) => {
-//   pool.query(
-//     `SELECT * FROM products WHERE productName LIKE '${req.params.searchItem}%'`,
-//     function (err, result, fields) {
-//       if (err) {
-//         console.error("SQL ERROR products/search/:searchItem");
-//         return;
-//       }
-//       console.log(result);
-//       res.json(result);
-//     }
-//   );
-// });
 //ASSUME THAT MINCOST AND MAXCOST ARE PROVIDED. By default they should be between 0 and the 1000 or something
 router.get("/products/filter/:min/:max", (req, res) => {
   if (req.params.min && req.params.max) {
