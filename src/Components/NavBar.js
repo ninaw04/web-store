@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import { SearchContext } from "./HomePage.js";
 import Cookies from "js-cookie";
 import CheckoutCard from "./CheckoutProductCard.js";
-
+import ListItemView from "./ListItemView.js"
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -45,7 +45,6 @@ export default function NavBar() {
   const [cartProducts, setCartProducts] = React.useState([]);
 
   const handleDrawerOpen = (event) => {
-    getCart();
     setIsDrawerOpen(true);
   };
 
@@ -100,20 +99,6 @@ export default function NavBar() {
     </Menu>
   );
 
-  async function getCart() {
-    console.log("user:")
-    console.log(user)
-    const response = await fetch(`http://localhost:3000/buyers/${user.id}/cart`);
-
-    if (!response.ok) {
-      const message = `An error occurred: ${response.statusText}`;
-      window.alert(message);
-      return;
-    }
-    const prods = await response.json();
-    setCartProducts(prods);
-    console.log(prods);
-  }
 
   useEffect(() => {
     const authCookie = Cookies.get("auth");
@@ -129,23 +114,6 @@ export default function NavBar() {
     sessionStorage.removeItem("auth");
     setUser(null);
   };
-
-  function displayProducts() {
-    console.log("inside display rpoducts");
-    console.log(cartProducts)
-
-    return cartProducts.map((item) => {
-      return (
-        <CheckoutCard
-          pid={item.productId}
-          name={item.productName}
-          price={item.price}
-          image={item.imgUrl}
-          quantity={item.amount}
-        />
-      );
-    });
-  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -196,7 +164,7 @@ export default function NavBar() {
                 sx={{ width: 1, height: 1, position: "relative" }}
                 justifyContent={"space-around"}
               >
-                <Box className="cart-list">{displayProducts()}</Box>
+                <ListItemView prev = ""/>
                 <Typography>
                   Display said items as (small?) product cards
                 </Typography>

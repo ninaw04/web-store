@@ -1,7 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
-import CheckoutCard from "./CheckoutProductCard";
 import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardContent from "@mui/joy/CardContent";
@@ -12,9 +11,10 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import ListItemView from "./ListItemView.js";
+import CheckoutCard from "./CheckoutProductCard.js";
 
 export default function CheckoutPage(props) {
-  console.log("HERE IN checkout page")
   return (
     <div className="two-panel-checkout">
       <Grid container spacing={2}>
@@ -75,18 +75,14 @@ export default function CheckoutPage(props) {
         </Grid>
         <Grid className="checkout-list" item xs={6}>
           <Box>
-            <CheckoutCard
-              name="Sample 1"
-              price={19.99}
-              image={"assets/images/heels.jpg"}
+            {/* <CheckoutCard
+              pid={1}
+              name={"Muscle Lipstick"}
+              price={15}
+              image={"/assets/images/lipstick.jpg"}
               quantity={2}
-            />
-            <CheckoutCard
-              name="Sample 2"
-              price={19.99}
-              image={"assets/images/lipstick.jpg"}
-              quantity={1}
-            />
+            /> */}
+            <ListItemView prev = {"/"}/>
             <Grid
               sx={{
                 display: "flex",
