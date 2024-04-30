@@ -20,7 +20,8 @@ const images = [
   },
   {
     label: 'Accessory',
-    imgPath: 'assets/images/melody.jpeg',
+    // imgPath: 'assets/images/melody.jpeg',
+    imgPath: 'assets/images/sampleProductImg.png',
     category: "accessory"
   },
   {
