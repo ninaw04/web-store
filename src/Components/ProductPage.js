@@ -1,7 +1,7 @@
 import Carousel from "./Carousel";
 import Filter from "./Filter";
 
-import Box from "@mui/material/Box";
+import { Box, Button } from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 import ProductCard from "./ProductCard";
 import { RangeContext } from "./HomePage.js";
@@ -67,6 +67,13 @@ export default function ProductPage() {
       );
     });
   }
+
+  function setClear() {
+    setRange([0,1000]);
+    setSearch("");
+    setCategory("");
+  }
+
   return (
     <div>
       <Carousel handleCategoryFilter={handleCategoryFilter}></Carousel>
@@ -82,7 +89,8 @@ export default function ProductPage() {
           backgroundColor: "rgba(255, 255, 255, 0.8)",
         }}
       >
-        <Filter />
+        <Box sx={{ mr:15 }}><Filter /></Box>
+        <Button variant="contained" color="secondary" onClick={setClear}>Clear Filters</Button>
       </Box>
       <div className="products-list">{displayProducts()}</div>
     </div>
