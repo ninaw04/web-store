@@ -103,9 +103,9 @@ router.get("/:id/cart", (req, res) => {
 /*POST item to cart*/
 router.post("/cart", (req, res) => {
   // const { buyerId, productId } = ;
-  console.log(req.body);
+  // console.log(req.body);
   pool.query(
-    `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, 1)`,
+    `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, ${req.body.amount}) ON DUPLICATE KEY UPDATE amount = ${req.body.amount}`,
     (err, data) => {
       if (err) return res.json(err);
       return res.json(data);

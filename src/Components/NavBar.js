@@ -141,7 +141,7 @@ export default function NavBar() {
           name={item.productName}
           price={item.price}
           image={item.imgUrl}
-          quanity={item.amount}
+          quantity={item.amount}
         />
       );
     });
