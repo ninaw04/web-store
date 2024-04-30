@@ -54,7 +54,7 @@ function Carousel(props) {
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
-        backgroundColor: 'red',
+        backgroundColor: 'background.default'
       }}
     >
       <Paper
@@ -63,12 +63,13 @@ function Carousel(props) {
         sx={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
           height: 50,
           pl: 2,
           bgcolor: "background.default",
         }}
       >
-        <Typography>{images[activeStep].label}</Typography>
+        <Typography sx={{ fontWeight: 'bold '}}>{images[activeStep].label}</Typography>
       </Paper>
       <AutoPlaySwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -77,18 +78,26 @@ function Carousel(props) {
         enableMouseEvents
       >
         {images.map((step, index) => (
-          <div key={step.label}>
+          <div key={step.label} style={{display:'flex', justifyContent:'center' }}>
             {Math.abs(activeStep - index) <= 2 ? (
               <Box
                 component="img"
+                elevation={10}
                 sx={{
                   height: 637.5,
                   display: "block",
                   maxWidth: 1000,
                   overflow: "hidden",
                   width: "100%",
-                  alignContent: 'flex-end', 
+                  alignContent: 'center', 
                   backgroundColor: "blue",
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-10px)'
+                  },
+                  '&:active': {
+                    transform: 'scale(0.95)'
+                  }
                 }}
                 src={step.imgPath}
                 alt={step.label}
