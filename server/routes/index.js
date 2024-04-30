@@ -9,7 +9,7 @@ let pool = require("../database").pool;
 /* GET home page. */
 router.get("/", function (req, res, next) {
   console.log("rarhhhhhhhh");
-  res.json("backend for muscle mommies :)))");
+  res.json("addresbackend for muscle mommies :)))");
 });
 
 /* GET products */
