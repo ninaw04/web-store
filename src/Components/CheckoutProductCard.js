@@ -1,14 +1,9 @@
 import React from "react";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import CardActions from "@mui/material/CardActions";
+
 import Badge from "@mui/material/Badge";
-import MailIcon from "@mui/icons-material/Mail";
 import "../styles.css";
 function CheckoutCard(props) {
   return (
