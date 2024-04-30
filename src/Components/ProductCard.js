@@ -15,7 +15,7 @@ import Cookies from "js-cookie";
 function ProductCard(props) {
   const [count, setCount] = React.useState(0);
   const [userInfo, setUserInfor] = React.useState(null);
-  
+
   useEffect(() => {
     const authCookie = Cookies.get("auth");
     if (authCookie) {
@@ -25,60 +25,44 @@ function ProductCard(props) {
   }, []);
 
   async function handleRemove() {
-    const newCount = count - 1;
-    setCount(newCount);
-
-    if (newCount >= 0) {
-      try {
-        if (newCount == 0) {
-          console.log("deleting");
-          await axios.delete(
-            `http://localhost:3000/buyers/cart/${userInfo.id}/${props.pid}`
-          );
-        }
-        if (newCount > 0) {
-          console.log("subtracting");
-          await axios.put(`http://localhost:3000/buyers/cart`, {
-            buyerId: userInfo.id,
-            productId: props.pid,
-            amount: newCount,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      alert("Cannot add negative items to cart");
+    if (count == 0) {
+      alert("cannot have negative items")
     }
+    else {
+      const newCount = count - 1;
+      setCount(newCount);
+      
+    }
+    
   }
-
-  async function handleAdd() {
-    const newCount = count + 1;
-    setCount(newCount);
-
+  async function addToCart() {
+    console.log(count)
     try {
-      if (newCount === 1) {
-        console.log(userInfo.id, props.pid)
+      if (count === 0) {
+        console.log("deleting");
+        await axios.delete(
+          `http://localhost:3000/buyers/cart/${userInfo.id}/${props.pid}`
+        );
+      }
+      else if (count >=  1) {
+        console.log(userInfo.id, props.pid);
         const response = await axios.post(`http://localhost:3000/buyers/cart`, {
-          "buyerId": userInfo.id,
-          "productId": props.pid
+          buyerId: userInfo.id,
+          productId: props.pid,
+          amount: count
         });
-        console.log("first data end")
+        console.log("first data end");
+      }
 
-      }
-      if (newCount > 1) {
-        console.log("adding data")
-        const response = await axios.put(`http://localhost:3000/buyers/cart`, {
-          "buyerId": userInfo.id,
-          "productId": props.pid,
-          "amount": newCount,
-        });
-      }
     } catch (error) {
-      console.log("PROBLEM")
+      console.log("PROBLEM");
       console.log(error);
     }
-    console.log("post made");
+    console.log("done")
+  }
+  function handleAdd() {
+    const newCount = count + 1;
+    setCount(newCount);
   }
   // const fileUrl = require("" + props.image);
 
@@ -112,8 +96,8 @@ function ProductCard(props) {
       <CardActions className="shopping-cart">
         {userInfo ? (
           <Button
-            onClick={async () => {
-              await handleRemove();
+            onClick={() => {
+              handleRemove();
             }}
             endIcon={<RemoveIcon />}
           ></Button>
@@ -121,8 +105,8 @@ function ProductCard(props) {
           <div>
             <Link to="/login">
               <Button
-                onClick={async () => {
-                  await handleRemove();
+                onClick={() => {
+                  handleRemove();
                 }}
                 startIcon={<RemoveIcon />}
               ></Button>
@@ -133,8 +117,8 @@ function ProductCard(props) {
         <Typography>{count}</Typography>
         {userInfo ? (
           <Button
-            onClick={async () => {
-              await handleAdd();
+            onClick={() => {
+              handleAdd();
             }}
             endIcon={<AddIcon />}
           ></Button>
@@ -142,14 +126,15 @@ function ProductCard(props) {
           <div>
             <Link to="/login">
               <Button
-                onClick={async () => {
-                  await handleAdd();
+                onClick={() => {
+                  handleAdd();
                 }}
                 endIcon={<AddIcon />}
               ></Button>
             </Link>
           </div>
         )}
+        <Button onClick = {async () => {addToCart()}}>Add to Cart</Button>
       </CardActions>
     </Card>
   );

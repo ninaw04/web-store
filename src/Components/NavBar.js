@@ -1,27 +1,39 @@
-import * as React from 'react';
-import {useEffect} from 'react';
-import { AppBar, Drawer, Box, Button, Toolbar, IconButton, Typography, Badge, MenuItem, Menu, TextField } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import * as React from "react";
+import { useEffect } from "react";
+import {
+  AppBar,
+  Drawer,
+  Box,
+  Button,
+  Toolbar,
+  IconButton,
+  Typography,
+  Badge,
+  MenuItem,
+  Menu,
+  TextField,
+} from "@mui/material";
+import { styled, alpha } from "@mui/material/styles";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
-import { SearchContext } from './HomePage.js'
-import Cookies from 'js-cookie';
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
+import { SearchContext } from "./HomePage.js";
+import Cookies from "js-cookie";
+import CheckoutCard from "./CheckoutProductCard.js";
+import ListItemView from "./ListItemView.js"
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
+  "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
-    width: 'auto',
+    width: "auto",
   },
 }));
 
@@ -30,6 +42,7 @@ export default function NavBar() {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [search, setSearch] = React.useContext(SearchContext);
   const [user, setUser] = React.useState(null);
+  const [cartProducts, setCartProducts] = React.useState([]);
 
   const handleDrawerOpen = (event) => {
     setIsDrawerOpen(true);
@@ -37,7 +50,7 @@ export default function NavBar() {
 
   const handleDrawerClose = () => {
     setIsDrawerOpen(false);
-  }
+  };
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -51,27 +64,32 @@ export default function NavBar() {
 
   const Input = () => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter') {
-        setSearch(event.target.value)
+      if (event.key === "Enter") {
+        setSearch(event.target.value);
       }
-    }
-  
-    return <TextField type="text" placeholder="Search products..." onKeyDown={handleKeyDown} />
-  }
+    };
+    return (
+      <TextField
+        type="text"
+        placeholder="Search products..."
+        onKeyDown={handleKeyDown}
+      />
+    );
+  };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={menuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
@@ -81,19 +99,21 @@ export default function NavBar() {
     </Menu>
   );
 
-  useEffect( () => {
-    const authCookie = Cookies.get('auth');
-    if(authCookie) {
+
+  useEffect(() => {
+    const authCookie = Cookies.get("auth");
+    if (authCookie) {
       const userInfo = JSON.parse(authCookie);
       setUser(userInfo);
     }
-  }, [])
+    return;
+  }, []);
 
   const handleLogout = () => {
-    Cookies.remove('auth');
-    sessionStorage.removeItem('auth');
+    Cookies.remove("auth");
+    sessionStorage.removeItem("auth");
     setUser(null);
-  }
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -103,37 +123,54 @@ export default function NavBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
+            sx={{ display: { xs: "none", sm: "block" } }}
           >
             Muscle Mommies
           </Typography>
           <Search>
-            <Input/>
+            <Input />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }} >
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {user == null ? (
-              <Button variant="text" color="inherit" href='/login' >Sign in</Button>
-            ): <Button variant="text" color="inherit" onClick={handleLogout} >Sign out</Button>}
-            
-            <IconButton edge='start' color="inherit" aria-label="open shopping cart"  onClick={handleDrawerOpen}>
+              <Button variant="text" color="inherit" href="/login">
+                Sign in
+              </Button>
+            ) : (
+              <Button variant="text" color="inherit" onClick={handleLogout}>
+                Sign out
+              </Button>
+            )}
+
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open shopping cart"
+              onClick={handleDrawerOpen}
+            >
               {/* cartAmount, setCartAmount = 4 
               useEffect [cartAmount] */}
               <Badge badgeContent={3} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            <Drawer anchor="right" open={isDrawerOpen} onClose={handleDrawerClose} >
-              <Typography>
-                Total Items in your CARRTTTT:
-              </Typography>
-              <Box sx={{ width: 1, height: 1, position: 'relative' }} justifyContent={'space-around'}>
+            <Drawer
+              anchor="right"
+              open={isDrawerOpen}
+              onClose={handleDrawerClose}
+            >
+              <Typography>Total Items in your CARRTTTT:</Typography>
+              <Box
+                sx={{ width: 1, height: 1, position: "relative" }}
+                justifyContent={"space-around"}
+              >
+                <ListItemView prev = ""/>
                 <Typography>
                   Display said items as (small?) product cards
                 </Typography>
-                {/* <NavLink to = {"buyers/checkout"}>  */}
-                  <Button variant="contained"><Link to="buyers/checkout">Checkout</Link></Button>
-                {/* </NavLink> */}
+                <Button variant="contained">
+                  <Link to="buyers/checkout">Checkout</Link>
+                </Button>
               </Box>
             </Drawer>
             <IconButton
@@ -148,8 +185,7 @@ export default function NavBar() {
               <AccountCircle />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-          </Box>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}></Box>
         </Toolbar>
       </AppBar>
       {renderMenu}
