@@ -28,6 +28,11 @@ const images = [
     label: 'Clothes',
     imgPath: 'assets/images/clothes.png',
     category: "clothing"
+  },
+  {
+    label: 'Miscellaneous',
+    imgPath: 'assets/images/Miscellaneous.jpeg',
+    category: 'miscellaneous'
   }
 ];
 
