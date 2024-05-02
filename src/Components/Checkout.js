@@ -28,6 +28,7 @@ export default function CheckoutPage(props) {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [cartItems, setCartItems] = useState([]);
+  const [subtotal, setSubTotal] = React.useState(0);
 
   useEffect(() => {
     const authCookie = Cookies.get("auth");
@@ -52,8 +53,9 @@ export default function CheckoutPage(props) {
     setZipcode(address[0].zip);
   }
  
-  function displayCheckoutProducts() {
-
+  function getSubTotal(subtotal) {
+    console.log(subtotal)
+    setSubTotal(subtotal)
   }
 
   return (
@@ -125,7 +127,7 @@ export default function CheckoutPage(props) {
               image={"/assets/images/lipstick.jpg"}
               quantity={2}
             /> */}
-            <ListItemView prev = {"/"}/>
+            <ListItemView prev = {"/"} getSubTotal = {getSubTotal}/>
             <Grid
               sx={{
                 display: "flex",
@@ -136,7 +138,8 @@ export default function CheckoutPage(props) {
               }}
             >
               <Typography>Subtotal</Typography>
-              <Typography>{19.99 * 3}</Typography>
+              {/* <Typography>{19.99 * 3}</Typography> */}
+              <Typography>{subtotal}</Typography>
             </Grid>
             <Grid
               sx={{
@@ -158,7 +161,7 @@ export default function CheckoutPage(props) {
               }}
             >
               <Typography>Total</Typography>
-              <Typography>{19.99 * 3 + 5}</Typography>
+              <Typography>{subtotal + 5}</Typography>
             </Grid>
           </Box>
         </Grid>

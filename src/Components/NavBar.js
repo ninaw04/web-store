@@ -43,7 +43,11 @@ export default function NavBar() {
   const [search, setSearch] = React.useContext(SearchContext);
   const [user, setUser] = React.useState(null);
   const [cartProducts, setCartProducts] = React.useState([]);
-
+  const [subtotal, setSubTotal] = React.useState(0);
+  function getSubTotal(subtotal) {
+    console.log(subtotal)
+    setSubTotal(subtotal)
+  }
   const handleDrawerOpen = (event) => {
     setIsDrawerOpen(true);
   };
@@ -119,14 +123,16 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+        <Link to="/" style = {{textDecoration: "None" }}>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ display: { xs: "none", sm: "block" }}}
           >
             Muscle Mommies
           </Typography>
+          </Link>
           <Search>
             <Input />
           </Search>
@@ -164,12 +170,12 @@ export default function NavBar() {
                 sx={{ width: 1, height: 1, position: "relative" }}
                 justifyContent={"space-around"}
               >
-                <ListItemView prev = ""/>
+                <ListItemView prev = "" getSubTotal = {getSubTotal}/>
                 <Typography>
-                  Display said items as (small?) product cards
+                  Subtotal: {subtotal}
                 </Typography>
                 <Button variant="contained">
-                  <Link to="buyers/checkout">Checkout</Link>
+                  <Link to="buyers/checkout" style = {{textDecoration: "None"}}>Checkout</Link>
                 </Button>
               </Box>
             </Drawer>
