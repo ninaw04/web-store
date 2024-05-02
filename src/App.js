@@ -8,18 +8,17 @@ import HomePage from "./Components/HomePage";
 import RegisterPage from "./Components/Register";
 import LoginPage from "./Components/Login";
 import NavBar from "./Components/NavBar";
-import ProfilePage from "./Components/ProfilePage"
+import ProfilePage from "./Components/ProfilePage";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from '@mui/material/CssBaseline';
+import CssBaseline from "@mui/material/CssBaseline";
+import { CssVarsProvider } from "@mui/joy";
 
 const theme = createTheme({
-  typography:{
-
-  },
+  typography: {},
   palette: {
     // mode: 'dark',
     background: {
-      default: "#faf0e6"
+      default: "#faf0e6",
     },
     primary: {
       light: "#757ce8",
@@ -47,25 +46,26 @@ function App() {
   const [totalCartItems, setTotalCartItems] = useState(0);
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box>
-        <SearchContext.Provider value={[search, setSearch]}>
-          <RangeContext.Provider value={[range, setRange]}>
-            <TotalCartItems.Provider value={[totalCartItems, setTotalCartItems]}>
-              <NavBar></NavBar>
-              <Routes>
-                <Route exact path="/" element={<HomePage />} />
-                <Route path="buyers/checkout" element={<CheckoutPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-              </Routes>
-            </TotalCartItems.Provider>
-          </RangeContext.Provider>
-        </SearchContext.Provider>
-      </Box>
+        <CssBaseline />
+        <Box>
+          <SearchContext.Provider value={[search, setSearch]}>
+            <RangeContext.Provider value={[range, setRange]}>
+              <TotalCartItems.Provider
+                value={[totalCartItems, setTotalCartItems]}
+              >
+                <NavBar></NavBar>
+                <Routes>
+                  <Route exact path="/" element={<HomePage />} />
+                  <Route path="buyers/checkout" element={<CheckoutPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                </Routes>
+              </TotalCartItems.Provider>
+            </RangeContext.Provider>
+          </SearchContext.Provider>
+        </Box>
     </ThemeProvider>
-    
   );
 }
 

@@ -2,21 +2,22 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
-import Card from "@mui/joy/Card";
-import CardActions from "@mui/joy/CardActions";
-import CardContent from "@mui/joy/CardContent";
-import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
-import Button from "@mui/joy/Button";
+import Card from '@mui/material/Card';
+import { CardActions } from '@mui/material';
+import { CardContent } from '@mui/material';
+import Divider from '@mui/material/Divider';
+
+import { FormControl } from '@mui/material';
+import { FormLabel } from '@mui/material';
+import { Input } from '@mui/material';
+import {Button} from "@mui/material"
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import axios from 'axios';
-
+import { useTheme } from '@mui/material/styles';
 import ListItemView from "./ListItemView.js";
 import Cookies from "js-cookie";
-
+import { CssVarsProvider } from "@mui/joy";
 export default function CheckoutPage(props) {
   console.log("HERE IN checkout page");
   const [user, setUser] = React.useState(null);
@@ -28,7 +29,7 @@ export default function CheckoutPage(props) {
   const [zipcode, setZipcode] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubTotal] = React.useState(0);
-
+  const theme = useTheme();
   useEffect(() => {
     const authCookie = Cookies.get("auth");
     if (authCookie) {
@@ -122,10 +123,7 @@ export default function CheckoutPage(props) {
                   <FormLabel>Card holder name</FormLabel>
                   <Input placeholder="Enter cardholder's full name" />
                 </FormControl>
-                {/* <Checkbox
-                  label="Save card"
-                  sx={{ gridColumn: "1/-1", my: 1 }}
-                /> */}
+
                 <CardActions sx={{ gridColumn: "1/-1" }}>
                   <Button variant="solid" color="primary">
                     Add card
@@ -138,13 +136,7 @@ export default function CheckoutPage(props) {
         </Grid>
         <Grid className="checkout-list" item xs={6}>
           <Box>
-            {/* <CheckoutCard
-              pid={1}
-              name={"Muscle Lipstick"}
-              price={15}
-              image={"/assets/images/lipstick.jpg"}
-              quantity={2}
-            /> */}
+            
             <ListItemView prev = {"/"} getSubTotal = {getSubTotal} getCartItems = {getCartItems}/>
             <Grid
               sx={{

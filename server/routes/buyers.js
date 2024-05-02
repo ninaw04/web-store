@@ -37,10 +37,10 @@ router.post("/order", (req, res) => {
   //   if (err) return res.json(err);
   //   return res.status(200).json("Order successfully added");
   // });
-  // // pool.query(`DELETE from cart where buyerId = ${req.body.buyerId}`, (err, data) => {
-  // //   if (err) return res.json(err);
-  // //   return res.status(200).json("Cart cleared succesfully");
-  // // })
+  // pool.query(`DELETE from cart where buyerId = ${req.body.buyerId}`, (err, data) => {
+  //   if (err) return res.json(err);
+  //   return res.status(200).json("Cart cleared succesfully");
+  // })
   
 });
 
