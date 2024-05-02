@@ -107,9 +107,10 @@ export default function NavBar() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      sx={{ flexGrow: 1, top:0, zIndex: 9999 }}
     >
       <MenuItem onClick={() => {handleMenuClose(); openProfile();}} >Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
     </Menu>
   );
 

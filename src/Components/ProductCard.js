@@ -61,24 +61,13 @@ function ProductCard(props) {
   async function getTotalCart(user) {
     console.log("inside get total cart" + user)
     console.log(user)
-    // console.log(userInfo.id)
     try{
       console.log("this is what it has come to" + user)
       var response = await fetch(`http://localhost:3000/buyers/definite/total/cart/${user}`);
       console.log(response)
-      // const totalCart = await response.json(); // this shouldnt run if the response isnt ok
-      // const answer = response.data.json()
-      
-
-      // const something = Object.entries(response)
-      // const something2 = Object.entries(response.data)
-      // const what = response.json().sum
-      // console.log("sum: " + something)
-      // console.log("sum2: " + what)
       response.json().then(data => {
         console.log(data[0]['sum'])
         setTotalCartItems(data[0]['sum'])})
-      // setTotalCartItems();
     }
     catch (error) {
       console.log("naurrr not getting total cart");
@@ -90,6 +79,9 @@ function ProductCard(props) {
   
 
   async function addToCart() {
+    // if(userInfo != null){
+    //   getTotalCart(userInfo.id)
+    // }
     // getTotalCart()
     console.log(count)
     try {
