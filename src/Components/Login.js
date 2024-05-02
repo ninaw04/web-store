@@ -25,7 +25,7 @@ function Login() {
     const styles = {
         login: {
             backgroundColor: 'RoyalBlue',
-            height: '100vh',
+            height: 'calc(100vh - 65px)',
             display: 'flex',
             justifyContent: 'center'
         },

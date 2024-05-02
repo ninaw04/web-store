@@ -67,6 +67,18 @@ router.post("/user", async (req, res) => {
   });
 });
 
+router.get('/:email', (req, res) => {
+  const q = `SELECT * FROM user WHERE email = ${req.params.email}`
+  pool.query(q, (err, data) => {
+    if (err) return err;
+    if (data.length > 0) {
+      return res.json({Status: 'dup'})
+    } else {
+      return res.json({Status: 'no dup'})
+    }
+  })
+})
+
 //Add the new user's shipping address
 router.post("/address", (req, res) => {
   const q =

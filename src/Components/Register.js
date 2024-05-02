@@ -31,24 +31,26 @@ function Register() {
     const styles = {
         register: {
             display: 'flex',
-            height: 'calc(100vh - 40px)',
+            height: 'calc(100vh - 70px)',
             justifyContent: 'center',
             alignItems: 'center'
         },
         
         box: {
             display: 'flex',
-            width: '90%',
-            height: '80%',
-            borderRadius: 4,
-            overflowY: 'scroll'
+            width: 1200,
+            height: 600,
+            borderRadius: 4
         },
 
         left: {
             width: '40%', 
             height: '100%',
-            backgroundColor: 'DodgerBlue',
-            justifyContent: 'center'
+            backgroundColor: 'LightPink',
+            justifyContent: 'center',
+            borderRadius: 1,
+            padding: '30px 20px',
+            margin: 'auto'
         },
 
         right : {
@@ -56,7 +58,9 @@ function Register() {
             height: '100%',
             alignContent: 'flex-start',
             justifycontent: 'center',
-            margin: '20px 20px'
+            alignContent: 'center',
+            padding: '20px 20px',
+            backgroundColor: "GhostWhite"
         }
     }
 
@@ -76,6 +80,18 @@ function Register() {
             setError(true);
         }
     }    
+
+    async function checkEmail() {
+        try {
+            const response = await axios.get(`http://localhost:3000/${email}`);
+            console.log(response.data.Status);
+            if (response.data.Status == 'no dup') {
+                registerUser();
+            }
+        } catch(err) {
+            console.log(err)
+        }
+    }
 
     function setBlank() {
         setFname("");
@@ -101,14 +117,14 @@ function Register() {
             {!error ? (
                 <Box style={styles.box} sx={{boxShadow: 3}} >
             <Box className='left' sx={styles.left} >
-                <h1>Create your account</h1>
-                <p>To access awesome muscle mommies products!</p>
+                <Box sx={{fontSize: 40, fontWeight: 1000, color: 'red', lineHeight: 1, textAlign: 'center', textShadow: '3px 3px grey'}} >Sign up here for muscle mommies awesomeness!</Box>
+                <img src='assets/images/emoji.png' alt='muscle mommmm' style={{height: '430px', width: 'auto', fontFamily: 'Georgia'}} ></img>
             </Box>
             <Box className='right' sx={styles.right} >
 
                 <Box style={{fontWeight: '1000', fontSize: 23}} >Registration</Box>
 
-                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)'}} >
+                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)', paddingBottom: '30px'}} >
                 <TextField label="First Name" variant="standard" value={fname} onChange={(event) => setFname(event.target.value)} required />
                 <TextField label="Last Name" variant="standard" value={lname} onChange={(event) => setLname(event.target.value)} required />
                 <TextField label="Email" variant="standard" value={email} onChange={(event) => setEmail(event.target.value)} required />
@@ -135,7 +151,7 @@ function Register() {
                 </FormControl>
                 </Box>
 
-                <Box sx={{ margin: '20px, 20px, 0px, 0px', fontWeight: 'bold', fontSize: 18}} >Shipping Address</Box>
+                <Box sx={{ padding: '20px, 20px, 0px, 0px', fontWeight: 'bold', fontSize: 18}} >Shipping Address</Box>
                 <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)'}} >
                     <TextField label="Street Address" variant="standard" value={street} onChange={(event) => setStreet(event.target.value)} required />
                     <TextField label="Apartment Number(if applicable)" variant="standard" value={aptNumber} onChange={(event) => setAptNumber(event.target.value)} />
@@ -151,49 +167,51 @@ function Register() {
             </Box>
             </Box>
             ):
-<Box style={styles.box} sx={{boxShadow: 3}} >
+            <Box style={styles.box} sx={{boxShadow: 3}} >
             <Box className='left' sx={styles.left} >
-                <h1>Create your account</h1>
-                <p>To access awesome muscle mommies products!</p>
+                <Box sx={{fontSize: 40, fontWeight: 1000, color: 'red', lineHeight: 1, textAlign: 'center', textShadow: '3px 3px grey'}} >Sign up here for muscle mommies awesomeness!</Box>
+                <img src='assets/images/emoji.png' alt='muscle mommmm' style={{height: '430px', width: 'auto', fontFamily: 'Georgia'}} ></img>
             </Box>
             <Box className='right' sx={styles.right} >
 
-                <Box style={{padding: '30px 0px 15px 20px', fontWeight: '1000', fontSize: 23}} >Registration</Box>
+            <Box style={{fontWeight: '1000', fontSize: 23}} >Registration</Box>
 
-                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)', padding:'0px 20px'}} >
+            <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)', paddingBottom: '30px'}} >
                 <TextField label="First Name" variant="standard" value={fname} onChange={(event) => setFname(event.target.value)} required />
                 <TextField label="Last Name" variant="standard" value={lname} onChange={(event) => setLname(event.target.value)} required />
                 <TextField label="Email" variant="standard" value={email} onChange={(event) => setEmail(event.target.value)} required />
-                
+
                 <FormControl variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input
+                        value={password}
+                        onChange={((event) => setPassword(event.target.value))}
                         id="standard-adornment-password"
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
+                        <InputAdornment position="end">
+                        <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                        >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>
                         }
                     />
                 </FormControl>
-                </Box>
+            </Box>
 
-                <Box style={{padding: '25px 20px 0px', fontWeight: 'bold', fontSize: 18}} >Shipping Address</Box>
-                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)', padding: '0px 20px 5px'}} >
-                    <TextField label="Street Address" variant="standard" value={street} onChange={(event) => setStreet(event.target.value)} required />
-                    <TextField label="Apartment Number(if applicable)" variant="standard" value={aptNumber} onChange={(event) => setAptNumber(event.target.value)} />
-                    <TextField label="Country" variant="standard" value={country} onChange={(event) => setCountry(event.target.value)} required />
-                    <TextField label="State" variant="standard" value={state} onChange={(event) => setState(event.target.value)} required />
-                    <TextField label="City" variant="standard" value={city} onChange={(event) => setCity(event.target.value)} required />
-                    <TextField  label="Zip code" variant="standard" value={zipcode} onChange={(event) => setZipcode(event.target.value)} required />
-                </Box>
+            <Box sx={{ padding: '20px, 20px, 0px, 0px', fontWeight: 'bold', fontSize: 18}} >Shipping Address</Box>
+            <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)'}} >
+                <TextField label="Street Address" variant="standard" value={street} onChange={(event) => setStreet(event.target.value)} required />
+                <TextField label="Apartment Number(if applicable)" variant="standard" value={aptNumber} onChange={(event) => setAptNumber(event.target.value)} />
+                <TextField label="Country" variant="standard" value={country} onChange={(event) => setCountry(event.target.value)} required />
+                <TextField label="State" variant="standard" value={state} onChange={(event) => setState(event.target.value)} required />
+                <TextField label="City" variant="standard" value={city} onChange={(event) => setCity(event.target.value)} required />
+                <TextField  label="Zip code" variant="standard" value={zipcode} onChange={(event) => setZipcode(event.target.value)} required />
+            </Box>
                 <Alert variant="outlined" severity="error">Please fill in the empty entries</Alert>
                 <Box style={{padding: '5px 20px'}} >
                     <Button variant="contained" onClick={registerUser} >Register</Button>
