@@ -4,8 +4,8 @@ import Filter from "./Filter";
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 import ProductCard from "./ProductCard";
-import { RangeContext } from "./HomePage.js";
-import { SearchContext } from "./HomePage.js";
+import { RangeContext } from "../App.js";
+import { SearchContext } from "../App.js";
 
 export default function ProductPage() {
   const [range, setRange] = useContext(RangeContext);

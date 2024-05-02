@@ -17,7 +17,7 @@ import { styled, alpha } from "@mui/material/styles";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
-import { SearchContext } from "./HomePage.js";
+import { SearchContext } from "../App.js";
 import Cookies from "js-cookie";
 import CheckoutCard from "./CheckoutProductCard.js";
 import ListItemView from "./ListItemView.js"

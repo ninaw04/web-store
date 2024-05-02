@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { Button, Typography } from "@mui/material";
-import {RangeContext} from './HomePage.js'
+import {RangeContext} from '../App.js'
 export default function Filter() {
 
   
