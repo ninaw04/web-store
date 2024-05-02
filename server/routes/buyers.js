@@ -30,18 +30,19 @@ router.post("/order", (req, res) => {
   var q = "INSERT INTO orders VALUES "
   for (const [key, value] of Object.entries(req.body.items)) {
     console.log(`${key}: ${value.buyerID}, ${value.productId}`);
-    q += `(${value.buyerID}, ${value.productId}, now(), 0),`; // status 0 means not delivered 
+    q += `(${value.buyerID}, ${value.productId}, now(), 0, ${value.amount}),`; // status 0 means not delivered 
   }
   console.log(q.substring(0, q.length - 1))
-  // pool.query(q, (err, data) => {
-  //   if (err) return res.json(err);
-  //   return res.status(200).json("Order successfully added");
-  // });
-  // pool.query(`DELETE from cart where buyerId = ${req.body.buyerId}`, (err, data) => {
-  //   if (err) return res.json(err);
-  //   return res.status(200).json("Cart cleared succesfully");
-  // })
-  
+  pool.query(q.substring(0, q.length - 1), (err, data) => {
+    if (err) return res.json(err);
+  });
+  console.log("added to orders")
+  console.log(req.body.buyerId)
+  pool.query(`DELETE from cart where buyerId = ${req.body.buyerId}`, (err, data) => {
+    if (err) return res.json(err);
+  })
+  // console.log("Cart cleared")
+  // return res.status(200).json("order added and cart deleted!");
 });
 
 router.get('/order/:id', (req, res) => {
