@@ -54,7 +54,7 @@ export default function CheckoutPage(props) {
   }
 
   async function getAddress(bid) {
-    const response = await fetch(`http://localhost:3000/buyers/${bid}/address`);
+    const response = await fetch(`http://localhost:3000/buyers/address/${bid}`);
 
     console.log(bid);
     const address = await response.json();
@@ -67,7 +67,7 @@ export default function CheckoutPage(props) {
     setZipcode(address[0].zip);
   }
   function getCartItems(items){
-    
+
     setCartItems(items)
     
   }

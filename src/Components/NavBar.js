@@ -17,10 +17,12 @@ import { styled, alpha } from "@mui/material/styles";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link } from "react-router-dom";
-import { SearchContext } from "../App.js";
+import { SearchContext, TotalCartItems } from "../App.js";
 import Cookies from "js-cookie";
 import CheckoutCard from "./CheckoutProductCard.js";
 import ListItemView from "./ListItemView.js"
+import {useNavigate} from 'react-router-dom'
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -44,6 +46,10 @@ export default function NavBar() {
   const [user, setUser] = React.useState(null);
   const [cartProducts, setCartProducts] = React.useState([]);
   const [subtotal, setSubTotal] = React.useState(0);
+  const [totalCartItems, setTotalCartItems] = React.useContext(TotalCartItems);
+
+  const navigate = useNavigate('/');
+
   function getSubTotal(subtotal) {
     console.log(subtotal)
     setSubTotal(subtotal)
@@ -65,6 +71,10 @@ export default function NavBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const openProfile = () => {
+    navigate('/profile');
+  }
 
   const Input = () => {
     const handleKeyDown = (event) => {
@@ -98,7 +108,7 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={() => {handleMenuClose(); openProfile();}} >Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -112,6 +122,7 @@ export default function NavBar() {
     }
     return;
   }, []);
+  //totalCartItems
 
   const handleLogout = () => {
     Cookies.remove("auth");
@@ -123,27 +134,18 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-        <Link to="/" style = {{textDecoration: "None" }}>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" }}}
-          >
-            Muscle Mommies
-          </Typography>
-          </Link>
+          <a href="/"><img src="assets/images/muscle_mommy_logo.png" alt="company logo" style={{width: 'auto', height: '40px'}} ></img></a>
           <Search>
             <Input />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {user == null ? (
-              <Button variant="text" color="inherit" href="/login">
+              <Button sx={{marginRight: '15px'}} variant="text" color="inherit" href="/login">
                 Sign in
               </Button>
             ) : (
-              <Button variant="text" color="inherit" onClick={handleLogout}>
+              <Button sx={{marginRight: '15px'}} variant="text" color="inherit" onClick={handleLogout}>
                 Sign out
               </Button>
             )}
@@ -156,7 +158,7 @@ export default function NavBar() {
             >
               {/* cartAmount, setCartAmount = 4 
               useEffect [cartAmount] */}
-              <Badge badgeContent={3} color="error">
+              <Badge badgeContent={totalCartItems} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -165,7 +167,7 @@ export default function NavBar() {
               open={isDrawerOpen}
               onClose={handleDrawerClose}
             >
-              <Typography>Total Items in your CARRTTTT:</Typography>
+              <Typography>Total Items in Cart: {totalCartItems}</Typography>
               <Box
                 sx={{ width: 1, height: 1, position: "relative" }}
                 justifyContent={"space-around"}

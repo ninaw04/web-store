@@ -28,11 +28,11 @@ export default function ProductPage() {
       };
       var response;
 
-      if (search == "" && category != "") { // CATEGORY ONLY
+      if (search === "" && category !== "") { // CATEGORY ONLY
         response = await fetch(
           `http://localhost:3000/products/category/filter/${range[0]}/${range[1]}/${category}`
         );
-      } else if (category != "") { // CATEGORY AND SEARCH
+      } else if (category !== "") { // CATEGORY AND SEARCH
         response = await fetch(
           `http://localhost:3000/products/filter/${range[0]}/${range[1]}/${category}/${search}`
         );
@@ -86,7 +86,7 @@ export default function ProductPage() {
           position: "sticky",
           top: 0,
           zIndex: 9999,
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backgroundColor: "rgba(217, 185, 155, 0.8)",
         }}
       >
         <Box sx={{ mr:15 }}><Filter /></Box>

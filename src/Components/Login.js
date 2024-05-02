@@ -12,8 +12,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
 import Cookies from 'js-cookie';
-import { Box, ThemeProvider, Stack} from '@mui/material';
-import NavBar from './NavBar';
+import { Box, Stack} from '@mui/material';
 
 function Login() {
 

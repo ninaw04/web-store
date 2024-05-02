@@ -44,13 +44,21 @@ router.post("/order", (req, res) => {
   
 });
 
+router.get('/order/:id', (req, res) => {
+  const q = `SELECT * FROM orders WHERE buyerId = ${req.params.id}`
+  console.log()
+
+  pool.query(q, (err, data) =>{
+    if (err) return err;
+    return res.json(data);
+  })
+}) 
+
 //Make a new user with login information
 router.post("/user", async (req, res) => {
   const q = "INSERT INTO user (buyerID, email, password) VALUES (?, ?, ?)";
   const { id, email, password } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 5);
-  // console.log(hashedPassword);
   const input = [id, email, password];
 
   pool.query(q, input, (err, data) => {
@@ -98,7 +106,7 @@ router.post("/login", (req, res) => {
 });
 
 /* GET buyer address */
-router.get("/:id/address", (req, res) => {
+router.get("/address/:id", (req, res) => {
   const { id } = req.params;
   const q = `SELECT * FROM addresses WHERE buyerID = ${id}`;
 
@@ -107,6 +115,28 @@ router.get("/:id/address", (req, res) => {
     return res.json(data);
   });
 });
+
+router.post("address/:id", (req, res) => {
+  const {id} = req.params;
+  const {street, aptNumber, country, state, city, zipcode} = req.body;
+  const q = `UPDATE addresses country = ?, streetAdd = ?, aptNum = ?, city = ?, state = ?, zip = ? WHERE buyerId = ?`;
+
+  pool.query(q, country, street, aptNumber, city, state, zipcode, id, (err, data) => {
+    if (err) return err;
+    return res.json(data);
+  })
+})
+
+//GET info of user
+router.get('/info/:id', (req, res) => {
+  const {id} = req.params;
+  const q = `SELECT * FROM buyer WHERE buyerId = ${id}`;
+
+  pool.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data[0]);
+  })
+})
 
 /* GET cart */
 router.get("/:id/cart", (req, res) => {
@@ -132,6 +162,8 @@ router.post("/cart", (req, res) => {
     }
   );
 });
+
+// Delete from cart
 router.delete("/cart/:buyerId/:productId", (req, res) => {
   pool.query(
     `DELETE FROM cart where buyerId = ${req.params.buyerId} and productId = ${req.params.productId}`,
@@ -141,6 +173,8 @@ router.delete("/cart/:buyerId/:productId", (req, res) => {
     }
   );
 });
+
+// Add to cart
 router.put("/cart", (req, res) => {
   pool.query(
     `UPDATE cart set amount = ${req.body.amount} where buyerId = ${req.body.buyerId} and productId = ${req.body.productId}`,
@@ -150,4 +184,16 @@ router.put("/cart", (req, res) => {
     }
   );
 });
+
+// Total items in cart for one buyer
+router.get("/definite/total/cart/:buyerID", (req, res) => {
+  console.log("total cart backend") // should console log here :((((
+  pool.query(
+    `SELECT SUM(amount) FROM cart WHERE buyerID = ${req.params.buyerID}`, (err, data) => {
+      if (err) return res.json(err);
+      return res.json(data);
+    }
+  )
+})
+
 module.exports = router;
