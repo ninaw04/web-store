@@ -2,22 +2,23 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
-import Card from '@mui/material/Card';
-import { CardActions } from '@mui/material';
-import { CardContent } from '@mui/material';
-import Divider from '@mui/material/Divider';
+import Card from "@mui/material/Card";
+import { CardActions } from "@mui/material";
+import { CardContent } from "@mui/material";
+import Divider from "@mui/material/Divider";
 
-import { FormControl } from '@mui/material';
-import { FormLabel } from '@mui/material';
-import { Input } from '@mui/material';
-import {Button} from "@mui/material"
+import { FormControl } from "@mui/material";
+import { FormLabel } from "@mui/material";
+import { Input } from "@mui/material";
+import { Button } from "@mui/material";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import axios from 'axios';
-import { useTheme } from '@mui/material/styles';
+import axios from "axios";
+import { Link } from "react-router-dom";
+
+import { useTheme } from "@mui/material/styles";
 import ListItemView from "./ListItemView.js";
 import Cookies from "js-cookie";
-import { CssVarsProvider } from "@mui/joy";
 export default function CheckoutPage(props) {
   console.log("HERE IN checkout page");
   const [user, setUser] = React.useState(null);
@@ -29,7 +30,6 @@ export default function CheckoutPage(props) {
   const [zipcode, setZipcode] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubTotal] = React.useState(0);
-  const theme = useTheme();
   useEffect(() => {
     const authCookie = Cookies.get("auth");
     if (authCookie) {
@@ -39,19 +39,17 @@ export default function CheckoutPage(props) {
     }
   }, []);
   async function createOrder() {
-    console.log(`Got em items: `)
-    // console.log(user)
+    console.log(`Got em items: `);
+    console.log(user);
     try {
       const response = await axios.post("http://localhost:3000/buyers/order", {
-        "items": cartItems, 
-        // "buyerId" : user.id
-      })
+        items: cartItems,
+        buyerId: user.id,
+      });
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) {
-      console.log(error)
-    }
-    console.log("done")
-    
+    console.log("done");
   }
 
   async function getAddress(bid) {
@@ -59,7 +57,7 @@ export default function CheckoutPage(props) {
 
     console.log(bid);
     const address = await response.json();
-    console.log(address)
+    console.log(address);
     setStreet(address[0].streetAdd);
     setAptNumber(address[0].aptNum);
     setCountry(address[0].country);
@@ -67,14 +65,12 @@ export default function CheckoutPage(props) {
     setCity(address[0].city);
     setZipcode(address[0].zip);
   }
-  function getCartItems(items){
-
-    setCartItems(items)
-    
+  function getCartItems(items) {
+    setCartItems(items);
   }
   function getSubTotal(subtotal) {
-    console.log(subtotal)
-    setSubTotal(subtotal)
+    console.log(subtotal);
+    setSubTotal(subtotal);
   }
 
   return (
@@ -84,8 +80,12 @@ export default function CheckoutPage(props) {
           <Box>
             <Box>
               <Typography>Your shipping Address is:</Typography>
-              <Typography>{aptNumber}, {street}</Typography>
-              <Typography>{city},  {state}, {zipcode}, {country}</Typography>
+              <Typography>
+                {aptNumber}, {street}
+              </Typography>
+              <Typography>
+                {city}, {state}, {zipcode}, {country}
+              </Typography>
             </Box>
             <Typography>PAYMENT</Typography>
             <Card
@@ -131,13 +131,24 @@ export default function CheckoutPage(props) {
                 </CardActions>
               </CardContent>
             </Card>
-            <Button onClick = {() => {createOrder()}}>Pay Now</Button>
+            <Link to="/">
+              <Button
+                onClick={() => {
+                  createOrder();
+                }}
+              >
+                Pay Now
+              </Button>
+            </Link>
           </Box>
         </Grid>
         <Grid className="checkout-list" item xs={6}>
           <Box>
-            
-            <ListItemView prev = {"/"} getSubTotal = {getSubTotal} getCartItems = {getCartItems}/>
+            <ListItemView
+              prev={"/"}
+              getSubTotal={getSubTotal}
+              getCartItems={getCartItems}
+            />
             <Grid
               sx={{
                 display: "flex",
