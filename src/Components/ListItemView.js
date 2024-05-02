@@ -39,6 +39,10 @@ export default function ListCartItemView(props) {
     // {() => {return props.getSubTotal(sub)}};
     setSubTotal(sub);
     props.getSubTotal(sub)
+    if (props.getCartItems) {
+      
+      props.getCartItems(prods)
+    }
     console.log("cart products")
     console.log(cartProducts, sub)
     // console.log(prods);

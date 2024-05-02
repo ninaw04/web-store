@@ -23,6 +23,26 @@ router.post("/buyer", (req, res) => {
     return res.status(200).json({ id });
   });
 });
+router.post("/order", (req, res) => {
+  console.log("length")
+  console.log(typeof req.body.items);
+  console.log(req.body.items.entries());
+  var q = "INSERT INTO orders VALUES "
+  for (const [key, value] of Object.entries(req.body.items)) {
+    console.log(`${key}: ${value.buyerID}, ${value.productId}`);
+    q += `(${value.buyerID}, ${value.productId}, now(), 0),`; // status 0 means not delivered 
+  }
+  console.log(q.substring(0, q.length - 1))
+  // pool.query(q, (err, data) => {
+  //   if (err) return res.json(err);
+  //   return res.status(200).json("Order successfully added");
+  // });
+  // // pool.query(`DELETE from cart where buyerId = ${req.body.buyerId}`, (err, data) => {
+  // //   if (err) return res.json(err);
+  // //   return res.status(200).json("Cart cleared succesfully");
+  // // })
+  
+});
 
 //Make a new user with login information
 router.post("/user", async (req, res) => {
@@ -30,7 +50,7 @@ router.post("/user", async (req, res) => {
   const { id, email, password } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 5);
-  console.log(hashedPassword);
+  // console.log(hashedPassword);
   const input = [id, email, password];
 
   pool.query(q, input, (err, data) => {

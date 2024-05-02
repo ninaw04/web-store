@@ -12,11 +12,10 @@ import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import axios from 'axios';
 
 import ListItemView from "./ListItemView.js";
-import CheckoutCard from "./CheckoutProductCard.js";
 import Cookies from "js-cookie";
-import axios from "axios";
 
 export default function CheckoutPage(props) {
   console.log("HERE IN checkout page");
@@ -38,6 +37,21 @@ export default function CheckoutPage(props) {
       getAddress(userInfo.id);
     }
   }, []);
+  async function createOrder() {
+    console.log(`Got em items: `)
+    // console.log(user)
+    try {
+      const response = await axios.post("http://localhost:3000/buyers/order", {
+        "items": cartItems, 
+        // "buyerId" : user.id
+      })
+    }
+    catch (error) {
+      console.log(error)
+    }
+    console.log("done")
+    
+  }
 
   async function getAddress(bid) {
     const response = await fetch(`http://localhost:3000/buyers/${bid}/address`);
@@ -52,7 +66,11 @@ export default function CheckoutPage(props) {
     setCity(address[0].city);
     setZipcode(address[0].zip);
   }
- 
+  function getCartItems(items){
+    
+    setCartItems(items)
+    
+  }
   function getSubTotal(subtotal) {
     console.log(subtotal)
     setSubTotal(subtotal)
@@ -115,7 +133,7 @@ export default function CheckoutPage(props) {
                 </CardActions>
               </CardContent>
             </Card>
-            <Button>Pay Now</Button>
+            <Button onClick = {() => {createOrder()}}>Pay Now</Button>
           </Box>
         </Grid>
         <Grid className="checkout-list" item xs={6}>
@@ -127,7 +145,7 @@ export default function CheckoutPage(props) {
               image={"/assets/images/lipstick.jpg"}
               quantity={2}
             /> */}
-            <ListItemView prev = {"/"} getSubTotal = {getSubTotal}/>
+            <ListItemView prev = {"/"} getSubTotal = {getSubTotal} getCartItems = {getCartItems}/>
             <Grid
               sx={{
                 display: "flex",

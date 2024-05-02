@@ -170,7 +170,7 @@ export default function NavBar() {
                 sx={{ width: 1, height: 1, position: "relative" }}
                 justifyContent={"space-around"}
               >
-                <ListItemView prev = "" getSubTotal = {getSubTotal}/>
+                <ListItemView prev = "/" getSubTotal = {getSubTotal}/>
                 <Typography>
                   Subtotal: {subtotal}
                 </Typography>
