@@ -9,6 +9,7 @@ export default function ListCartItemView(props) {
   const [user, setUser] = React.useState(null);
   const base = props.prev;
   const [cartProducts, setCartProducts] = React.useState([]);
+  const [subtotal, setSubTotal] = React.useState(0);
   useEffect(() => {
     const authCookie = Cookies.get("auth");
     if (authCookie) {
@@ -17,6 +18,7 @@ export default function ListCartItemView(props) {
       getCart(userInfo);
 
     }
+    
     return;
   }, []);
   async function getCart(user) {
@@ -31,13 +33,26 @@ export default function ListCartItemView(props) {
     }
     const prods = await response.json();
     setCartProducts(prods);
-    console.log(prods);
+    var sub = 0
+    prods.forEach((item) => {sub += (item.price*item.amount)})
+    // console.log(`price: ${sub}`)
+    // {() => {return props.getSubTotal(sub)}};
+    setSubTotal(sub);
+    props.getSubTotal(sub)
+    if (props.getCartItems) {
+      
+      props.getCartItems(prods)
+    }
+    console.log("cart products")
+    console.log(cartProducts, sub)
+    // console.log(prods);
   }
-  function displayProducts(props) {
-    console.log("inside display rpoducts");
-    console.log(cartProducts)
+  function displayProducts() {
+    // console.log("inside display rpoducts");
+    // console.log(cartProducts)
 
     return cartProducts.map((item) => {
+      
       return (
         <CheckoutCard
           pid={item.productId}
@@ -50,6 +65,6 @@ export default function ListCartItemView(props) {
     });
   }
   return (
-    <Box className="cart-list">{displayProducts()}</Box>
+    <Box className="cart-list" >{displayProducts()}</Box>
   )
 }

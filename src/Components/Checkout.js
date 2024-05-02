@@ -2,22 +2,23 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Box, Typography } from "@mui/material";
-import Card from "@mui/joy/Card";
-import CardActions from "@mui/joy/CardActions";
-import CardContent from "@mui/joy/CardContent";
-import Divider from "@mui/joy/Divider";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
-import Button from "@mui/joy/Button";
+import Card from "@mui/material/Card";
+import { CardActions } from "@mui/material";
+import { CardContent } from "@mui/material";
+import Divider from "@mui/material/Divider";
+
+import { FormControl } from "@mui/material";
+import { FormLabel } from "@mui/material";
+import { Input } from "@mui/material";
+import { Button } from "@mui/material";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-
-import ListItemView from "./ListItemView.js";
-import CheckoutCard from "./CheckoutProductCard.js";
-import Cookies from "js-cookie";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
+import { useTheme } from "@mui/material/styles";
+import ListItemView from "./ListItemView.js";
+import Cookies from "js-cookie";
 export default function CheckoutPage(props) {
   console.log("HERE IN checkout page");
   const [user, setUser] = React.useState(null);
@@ -28,7 +29,7 @@ export default function CheckoutPage(props) {
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [cartItems, setCartItems] = useState([]);
-
+  const [subtotal, setSubTotal] = React.useState(0);
   useEffect(() => {
     const authCookie = Cookies.get("auth");
     if (authCookie) {
@@ -37,13 +38,26 @@ export default function CheckoutPage(props) {
       getAddress(userInfo.id);
     }
   }, []);
+  async function createOrder() {
+    console.log(`Got em items: `);
+    console.log(user);
+    try {
+      const response = await axios.post("http://localhost:3000/buyers/order", {
+        items: cartItems,
+        buyerId: user.id,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    console.log("done");
+  }
 
   async function getAddress(bid) {
-    const response = await fetch(`http://localhost:3000/buyers/${bid}/address`);
+    const response = await fetch(`http://localhost:3000/buyers/address/${bid}`);
 
     console.log(bid);
     const address = await response.json();
-    console.log(address)
+    console.log(address);
     setStreet(address[0].streetAdd);
     setAptNumber(address[0].aptNum);
     setCountry(address[0].country);
@@ -51,9 +65,12 @@ export default function CheckoutPage(props) {
     setCity(address[0].city);
     setZipcode(address[0].zip);
   }
- 
-  function displayCheckoutProducts() {
-
+  function getCartItems(items) {
+    setCartItems(items);
+  }
+  function getSubTotal(subtotal) {
+    console.log(subtotal);
+    setSubTotal(subtotal);
   }
 
   return (
@@ -63,8 +80,12 @@ export default function CheckoutPage(props) {
           <Box>
             <Box>
               <Typography>Your shipping Address is:</Typography>
-              <Typography>{aptNumber}, {street}</Typography>
-              <Typography>{city},  {state}, {zipcode}, {country}</Typography>
+              <Typography>
+                {aptNumber}, {street}
+              </Typography>
+              <Typography>
+                {city}, {state}, {zipcode}, {country}
+              </Typography>
             </Box>
             <Typography>PAYMENT</Typography>
             <Card
@@ -102,10 +123,7 @@ export default function CheckoutPage(props) {
                   <FormLabel>Card holder name</FormLabel>
                   <Input placeholder="Enter cardholder's full name" />
                 </FormControl>
-                {/* <Checkbox
-                  label="Save card"
-                  sx={{ gridColumn: "1/-1", my: 1 }}
-                /> */}
+
                 <CardActions sx={{ gridColumn: "1/-1" }}>
                   <Button variant="solid" color="primary">
                     Add card
@@ -113,19 +131,24 @@ export default function CheckoutPage(props) {
                 </CardActions>
               </CardContent>
             </Card>
-            <Button>Pay Now</Button>
+            <Link to="/">
+              <Button
+                onClick={() => {
+                  createOrder();
+                }}
+              >
+                Pay Now
+              </Button>
+            </Link>
           </Box>
         </Grid>
         <Grid className="checkout-list" item xs={6}>
           <Box>
-            {/* <CheckoutCard
-              pid={1}
-              name={"Muscle Lipstick"}
-              price={15}
-              image={"/assets/images/lipstick.jpg"}
-              quantity={2}
-            /> */}
-            <ListItemView prev = {"/"}/>
+            <ListItemView
+              prev={"/"}
+              getSubTotal={getSubTotal}
+              getCartItems={getCartItems}
+            />
             <Grid
               sx={{
                 display: "flex",
@@ -136,7 +159,8 @@ export default function CheckoutPage(props) {
               }}
             >
               <Typography>Subtotal</Typography>
-              <Typography>{19.99 * 3}</Typography>
+              {/* <Typography>{19.99 * 3}</Typography> */}
+              <Typography>{subtotal}</Typography>
             </Grid>
             <Grid
               sx={{
@@ -158,7 +182,7 @@ export default function CheckoutPage(props) {
               }}
             >
               <Typography>Total</Typography>
-              <Typography>{19.99 * 3 + 5}</Typography>
+              <Typography>{subtotal + 5}</Typography>
             </Grid>
           </Box>
         </Grid>

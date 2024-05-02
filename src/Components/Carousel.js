@@ -14,23 +14,23 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: "Makeup",
+    label: "MAKEUP",
     imgPath: "assets/images/makeup.jpeg",
     category: "makeup"
   },
   {
-    label: 'Accessory',
+    label: 'ACCESSORY',
     // imgPath: 'assets/images/melody.jpeg',
     imgPath: 'assets/images/sampleProductImg.png',
     category: "accessory"
   },
   {
-    label: 'Clothes',
+    label: 'CLOTHING',
     imgPath: 'assets/images/clothes.png',
     category: "clothing"
   },
   {
-    label: 'Miscellaneous',
+    label: 'MISCELLANEOUS',
     imgPath: 'assets/images/Miscellaneous.jpeg',
     category: 'miscellaneous'
   }

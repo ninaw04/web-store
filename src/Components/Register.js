@@ -30,10 +30,10 @@ function Register() {
 
     const styles = {
         register: {
-            height: '100vh',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
+            height: 'calc(100vh - 40px)',
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         
         box: {
@@ -55,7 +55,8 @@ function Register() {
             width: '60%',
             height: '100%',
             alignContent: 'flex-start',
-            justifycontent: 'center'
+            justifycontent: 'center',
+            margin: '20px 20px'
         }
     }
 
@@ -105,9 +106,9 @@ function Register() {
             </Box>
             <Box className='right' sx={styles.right} >
 
-                <Box style={{padding: '30px 0px 15px 20px', fontWeight: '1000', fontSize: 23}} >Registration</Box>
+                <Box style={{fontWeight: '1000', fontSize: 23}} >Registration</Box>
 
-                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)', padding:'0px 20px'}} >
+                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)'}} >
                 <TextField label="First Name" variant="standard" value={fname} onChange={(event) => setFname(event.target.value)} required />
                 <TextField label="Last Name" variant="standard" value={lname} onChange={(event) => setLname(event.target.value)} required />
                 <TextField label="Email" variant="standard" value={email} onChange={(event) => setEmail(event.target.value)} required />
@@ -134,8 +135,8 @@ function Register() {
                 </FormControl>
                 </Box>
 
-                <Box style={{padding: '25px 20px 0px', fontWeight: 'bold', fontSize: 18}} >Shipping Address</Box>
-                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)', padding: '0px 20px'}} >
+                <Box sx={{ margin: '20px, 20px, 0px, 0px', fontWeight: 'bold', fontSize: 18}} >Shipping Address</Box>
+                <Box sx={{display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)'}} >
                     <TextField label="Street Address" variant="standard" value={street} onChange={(event) => setStreet(event.target.value)} required />
                     <TextField label="Apartment Number(if applicable)" variant="standard" value={aptNumber} onChange={(event) => setAptNumber(event.target.value)} />
                     <TextField label="Country" variant="standard" value={country} onChange={(event) => setCountry(event.target.value)} required />
@@ -143,7 +144,7 @@ function Register() {
                     <TextField label="City" variant="standard" value={city} onChange={(event) => setCity(event.target.value)} required />
                     <TextField  label="Zip code" variant="standard" value={zipcode} onChange={(event) => setZipcode(event.target.value)} required />
                 </Box>
-                <Box style={{padding: '30px 20px'}} >
+                <Box style={{padding: '30px 0px'}} >
                     <Button variant="contained" onClick={registerUser} >Register</Button>
                 </Box>
                 

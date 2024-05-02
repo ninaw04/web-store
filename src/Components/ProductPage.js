@@ -4,8 +4,8 @@ import Filter from "./Filter";
 import { Box, Button } from "@mui/material";
 import React, { useEffect, useState, useContext } from "react";
 import ProductCard from "./ProductCard";
-import { RangeContext } from "./HomePage.js";
-import { SearchContext } from "./HomePage.js";
+import { RangeContext } from "../App.js";
+import { SearchContext } from "../App.js";
 
 export default function ProductPage() {
   const [range, setRange] = useContext(RangeContext);
@@ -28,11 +28,11 @@ export default function ProductPage() {
       };
       var response;
 
-      if (search == "" && category != "") { // CATEGORY ONLY
+      if (search === "" && category !== "") { // CATEGORY ONLY
         response = await fetch(
           `http://localhost:3000/products/category/filter/${range[0]}/${range[1]}/${category}`
         );
-      } else if (category != "") { // CATEGORY AND SEARCH
+      } else if (category !== "") { // CATEGORY AND SEARCH
         response = await fetch(
           `http://localhost:3000/products/filter/${range[0]}/${range[1]}/${category}/${search}`
         );
@@ -84,9 +84,9 @@ export default function ProductPage() {
           alignItems: "center",
           p: 2, // padding
           position: "sticky",
-          top: 0,
-          zIndex: 9999,
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          top: 50,
+          zIndex: 9998,
+          backgroundColor: "rgba(217, 185, 155, 0.8)",
         }}
       >
         <Box sx={{ mr:15 }}><Filter /></Box>

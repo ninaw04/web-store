@@ -11,15 +11,12 @@ export default function HomePage(props) {
   const [range, setRange] = useState([0, 1000]);
 
   return (
-    <SearchContext.Provider value={[search,setSearch]}>
-      <RangeContext.Provider value={[range, setRange]}>
-        <Box sx={{ display: "row" }}>
-          <NavBar></NavBar>
-          <Box sx={{ display: "flex" }}>
-            <ProductPage />
-          </Box>
-        </Box>
-      </RangeContext.Provider>
-    </SearchContext.Provider>
+    
+    <Box sx={{ display: "row" }}>
+      <Box sx={{ display: "flex" }}>
+        <ProductPage />
+      </Box>
+    </Box>
+     
   );
 }
