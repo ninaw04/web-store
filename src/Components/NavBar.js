@@ -121,7 +121,7 @@ export default function NavBar() {
       setUser(userInfo);
     }
     return;
-  }, []);
+  }, [totalCartItems]);
   //totalCartItems
 
   const handleLogout = () => {
@@ -131,7 +131,7 @@ export default function NavBar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, position:"sticky", top:0, zIndex: 9999 }}>
       <AppBar position="static">
         <Toolbar>
           <a href="/"><img src="assets/images/muscle_mommy_logo.png" alt="company logo" style={{width: 'auto', height: '40px'}} ></img></a>
@@ -166,6 +166,7 @@ export default function NavBar() {
               anchor="right"
               open={isDrawerOpen}
               onClose={handleDrawerClose}
+              sx={{ flexGrow: 1, position:"sticky", top:0, zIndex: 9999 }}
             >
               <Typography>Total Items in Cart: {totalCartItems}</Typography>
               <Box

@@ -40,7 +40,8 @@ function ProductCard(props) {
       const userInfo = JSON.parse(authCookie);
       setUserInfor(userInfo);
       // setUserID(userInfo.id)
-      // getTotalCart(userInfo); 
+      getTotalCart(userInfo.id); 
+      return;
     }
     return;
   }, []);
@@ -63,10 +64,21 @@ function ProductCard(props) {
     // console.log(userInfo.id)
     try{
       console.log("this is what it has come to" + user)
-      var response = await axios.get(`http://localhost:3000/buyers/definite/total/cart/${user.id}`);
+      var response = await fetch(`http://localhost:3000/buyers/definite/total/cart/${user}`);
       console.log(response)
       // const totalCart = await response.json(); // this shouldnt run if the response isnt ok
-      setTotalCartItems(response);
+      // const answer = response.data.json()
+      
+
+      // const something = Object.entries(response)
+      // const something2 = Object.entries(response.data)
+      // const what = response.json().sum
+      // console.log("sum: " + something)
+      // console.log("sum2: " + what)
+      response.json().then(data => {
+        console.log(data[0]['sum'])
+        setTotalCartItems(data[0]['sum'])})
+      // setTotalCartItems();
     }
     catch (error) {
       console.log("naurrr not getting total cart");

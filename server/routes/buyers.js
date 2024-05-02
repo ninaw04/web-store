@@ -202,7 +202,7 @@ router.put("/cart", (req, res) => {
 router.get("/definite/total/cart/:buyerID", (req, res) => {
   console.log("total cart backend") // should console log here :((((
   pool.query(
-    `SELECT SUM(amount) FROM cart WHERE buyerID = ${req.params.buyerID}`, (err, data) => {
+    `SELECT SUM(amount) AS sum FROM cart WHERE buyerID = ${req.params.buyerID}`, (err, data) => {
       if (err) return res.json(err);
       return res.json(data);
     }

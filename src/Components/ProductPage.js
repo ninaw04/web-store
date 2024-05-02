@@ -84,8 +84,8 @@ export default function ProductPage() {
           alignItems: "center",
           p: 2, // padding
           position: "sticky",
-          top: 0,
-          zIndex: 9999,
+          top: 50,
+          zIndex: 9998,
           backgroundColor: "rgba(217, 185, 155, 0.8)",
         }}
       >
