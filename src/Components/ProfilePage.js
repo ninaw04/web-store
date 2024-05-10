@@ -47,7 +47,7 @@ export default function ProfilePage() {
 
     const updateAddress = async(userId) => {
         try {
-            const response = await axios.post(`http://localhost:3000/buyers/order/${userId}`, {street: street, country: country, aptNumber: aptNumber, state: state, zipcode: zipcode, city: city});
+            const response = await axios.post(`http://localhost:3000/buyers/address/${userId}`, {street: street, country: country, aptNumber: aptNumber, state: state, zipcode: zipcode, city: city});
         } catch (err) {
             console.log(err)
         }
