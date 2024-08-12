@@ -1,3 +1,11 @@
+# 💪 E-commerce Website 💪
+This was a fun project made with React, ExpressJS, MySQL, with a database hosted on DigitalOcean. \
+🔄 HTTP requests were tested on Postman. \
+🍪 The site uses cookie-based user authentication
+
+## ‼️ Link to Video Showcase ‼️
+[![Video Showcase](http://img.youtube.com/vi/-86zUoobiLQ/0.jpg)](https://www.youtube.com/watch?v=-86zUoobiLQ&ab_channel=VihaShah)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
