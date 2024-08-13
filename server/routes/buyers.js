@@ -12,17 +12,41 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
-/* Make a new buyer */
-router.post("/buyer", (req, res) => {
-  const q = "INSERT INTO buyer (fName, lName) VALUES (?, ?)";
-  const input = [req.body.fName, req.body.lName];
+// EVERYTHING BUYER RELATED
+router.route("/buyer")
+  .post((req, res) => {
+    const q = "INSERT INTO buyer (fName, lName) VALUES (?, ?)";
+    const input = [req.body.fName, req.body.lName];
 
-  pool.query(q, input, (err, data) => {
-    if (err) return res.json(err);
-    const id = data.insertId;
-    return res.status(200).json({ id });
-  });
-});
+    pool.query(q, input, (err, data) => {
+      if (err) return res.json(err);
+      const id = data.insertId;
+      return res.status(200).json({ id });
+    });
+  })
+  .put((req, res) => {
+    const q = "INSERT INTO user (buyerID, email, password) VALUES (?, ?, ?)";
+    const { id, email, password } = req.body;
+
+    const input = [id, email, password];
+
+    pool.query(q, input, (err, data) => {
+      if (err) return res.json(err);
+      return res.status(200).json("User successfully added");
+    });
+  })
+
+/* Make a new buyer */
+// router.post("/buyer", (req, res) => {
+//   const q = "INSERT INTO buyer (fName, lName) VALUES (?, ?)";
+//   const input = [req.body.fName, req.body.lName];
+
+//   pool.query(q, input, (err, data) => {
+//     if (err) return res.json(err);
+//     const id = data.insertId;
+//     return res.status(200).json({ id });
+//   });
+// });
 router.post("/order", (req, res) => {
   console.log("length");
   console.log(typeof req.body.items);
@@ -59,17 +83,17 @@ router.get("/order/:id", (req, res) => {
 });
 
 //Make a new user with login information
-router.post("/user", async (req, res) => {
-  const q = "INSERT INTO user (buyerID, email, password) VALUES (?, ?, ?)";
-  const { id, email, password } = req.body;
+// router.post("/user", async (req, res) => {
+//   const q = "INSERT INTO user (buyerID, email, password) VALUES (?, ?, ?)";
+//   const { id, email, password } = req.body;
 
-  const input = [id, email, password];
+//   const input = [id, email, password];
 
-  pool.query(q, input, (err, data) => {
-    if (err) return res.json(err);
-    return res.status(200).json("User successfully added");
-  });
-});
+//   pool.query(q, input, (err, data) => {
+//     if (err) return res.json(err);
+//     return res.status(200).json("User successfully added");
+//   });
+// });
 
 router.get("/:email", (req, res) => {
   const q = `SELECT * FROM user WHERE email = ${req.params.email}`;
@@ -151,15 +175,36 @@ router.post("/address/:id", (req, res) => {
 });
 
 //GET info of user
-router.get("/info/:id", (req, res) => {
-  const { id } = req.params;
-  const q = `SELECT * FROM buyer WHERE buyerId = ${id}`;
+// router.get("/info/:id", (req, res) => {
+//   const { id } = req.params;
+//   const q = `SELECT * FROM buyer WHERE buyerId = ${id}`;
 
-  pool.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data[0]);
-  });
-});
+//   pool.query(q, (err, data) => {
+//     if (err) return res.json(err);
+//     return res.json(data[0]);
+//   });
+// });
+
+router.route("/cart")
+  .post((req, res) => { // POST item to cart
+    pool.query(
+      `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, ${req.body.amount}) ON DUPLICATE KEY UPDATE amount = ${req.body.amount}`,
+      (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+      }
+    );
+  })
+  .put((req, res) => { // ADD to cart
+    pool.query(
+      `UPDATE cart set amount = ${req.body.amount} where buyerId = ${req.body.buyerId} and productId = ${req.body.productId}`,
+      (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+      }
+    );
+  })
+  
 
 /* GET cart */
 router.get("/:id/cart", (req, res) => {
@@ -174,17 +219,17 @@ router.get("/:id/cart", (req, res) => {
 });
 
 /*POST item to cart*/
-router.post("/cart", (req, res) => {
-  // const { buyerId, productId } = ;
-  // console.log(req.body);
-  pool.query(
-    `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, ${req.body.amount}) ON DUPLICATE KEY UPDATE amount = ${req.body.amount}`,
-    (err, data) => {
-      if (err) return res.json(err);
-      return res.json(data);
-    }
-  );
-});
+// router.post("/cart", (req, res) => {
+//   // const { buyerId, productId } = ;
+//   // console.log(req.body);
+//   pool.query(
+//     `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, ${req.body.amount}) ON DUPLICATE KEY UPDATE amount = ${req.body.amount}`,
+//     (err, data) => {
+//       if (err) return res.json(err);
+//       return res.json(data);
+//     }
+//   );
+// });
 
 // Delete from cart
 router.delete("/cart/:buyerId/:productId", (req, res) => {
@@ -198,15 +243,15 @@ router.delete("/cart/:buyerId/:productId", (req, res) => {
 });
 
 // Add to cart
-router.put("/cart", (req, res) => {
-  pool.query(
-    `UPDATE cart set amount = ${req.body.amount} where buyerId = ${req.body.buyerId} and productId = ${req.body.productId}`,
-    (err, data) => {
-      if (err) return res.json(err);
-      return res.json(data);
-    }
-  );
-});
+// router.put("/cart", (req, res) => {
+//   pool.query(
+//     `UPDATE cart set amount = ${req.body.amount} where buyerId = ${req.body.buyerId} and productId = ${req.body.productId}`,
+//     (err, data) => {
+//       if (err) return res.json(err);
+//       return res.json(data);
+//     }
+//   );
+// });
 
 // Total items in cart for one buyer
 router.get("/definite/total/cart/:buyerID", (req, res) => {
