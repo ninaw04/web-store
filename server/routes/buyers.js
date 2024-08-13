@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var cookieParser = require("cookie-parser");
 var bcrypt = require("bcrypt");
+const { sql } = require("@matteo.collina/sqlite-pool");
 
 router.use(cookieParser());
 
@@ -14,210 +15,259 @@ router.get("/", function (req, res, next) {
 
 /* Make a new buyer */
 router.post("/buyer", (req, res) => {
-  const q = "INSERT INTO buyer (fName, lName) VALUES (?, ?)";
-  const input = [req.body.fName, req.body.lName];
-
-  pool.query(q, input, (err, data) => {
-    if (err) return res.json(err);
-    const id = data.insertId;
-    return res.status(200).json({ id });
-  });
+  //updated to new sqlite
+  const q = sql`INSERT INTO buyer (fName, lName) VALUES (${req.body.fName}, ${req.body.lName})`;
+  pool
+    .query(q)
+    .then(() => {
+      return pool.query(sql`select last_insert_rowid() as id;`);
+    })
+    .then((results) => {
+      console.log(results);
+      const id = results[0].id;
+      console.log(id);
+      return res.json({ id });
+    })
+    .catch((err) => {
+      return res.json(err);
+    });
 });
 router.post("/order", (req, res) => {
-  console.log("length");
-  console.log(typeof req.body.items);
-  console.log(req.body.items.entries());
-  var q = "INSERT INTO orders VALUES ";
-  for (const [key, value] of Object.entries(req.body.items)) {
+  //untested but converted code
+  let q =
+    "INSERT INTO orders (buyerID, productId, boughtDate, orderStatus, amount) VALUES ";
+  for (const [key, value] of Object.entries(req.body.orders)) {
     console.log(`${key}: ${value.buyerID}, ${value.productId}`);
-    q += `(${value.buyerID}, ${value.productId}, now(), 0, ${value.amount}),`; // status 0 means not delivered
+    q += `(${value.buyerID}, ${value.productId}, datetime('now'), 0, ${value.amount}),`;
   }
-  console.log(q.substring(0, q.length - 1));
-  pool.query(q.substring(0, q.length - 1), (err, data) => {
-    if (err) return res.json(err);
-  });
-  console.log("added to orders");
-  console.log(req.body.buyerId);
-  pool.query(
-    `DELETE from cart where buyerId = ${req.body.buyerId}`,
-    (err, data) => {
-      if (err) return res.json(err);
-    }
-  );
-  // console.log("Cart cleared")
-  // return res.status(200).json("order added and cart deleted!");
+
+  // Remove the trailing comma and add a semicolon to complete the query
+  q = q.slice(0, -1) + ";";
+  console.log(`query to send: ${q}`);
+  const query = sql`${q}`;
+  pool
+    .query(query)
+    .then((data) => {
+      console.log("added to orders");
+      console.log(req.body.buyerId);
+
+      return pool.query(
+        sql`DELETE FROM cart WHERE buyerId = ${req.body.buyerId}`
+      );
+    })
+    .then((data) => {
+      console.log("Cart cleared");
+      return res.status(200).json("Order added and cart deleted!");
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /order", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
 router.get("/order/:id", (req, res) => {
-  const q = `SELECT * FROM orders WHERE buyerId = ${req.params.id}`;
-  console.log();
+  const q = sql`SELECT * FROM orders WHERE buyerId = ${req.params.id}`;
 
-  pool.query(q, (err, data) => {
-    if (err) return err;
-    return res.json(data);
-  });
+  pool
+    .query(q)
+    .then((data) => {
+      return res.json(data);
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /order/:id", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
 //Make a new user with login information
 router.post("/user", async (req, res) => {
-  const q = "INSERT INTO user (buyerID, email, password) VALUES (?, ?, ?)";
+  // updated to sqlite
   const { id, email, password } = req.body;
+  const q = sql`INSERT INTO user (buyerID, email, password) VALUES (${id}, ${email}, ${password})`;
 
-  const input = [id, email, password];
-
-  pool.query(q, input, (err, data) => {
-    if (err) return res.json(err);
-    return res.status(200).json("User successfully added");
-  });
+  pool
+    .query(q)
+    .then((result) => res.status(200).json("User successfully added"))
+    .catch((err) => {
+      return res.json(err);
+    });
 });
 
 router.get("/:email", (req, res) => {
-  const q = `SELECT * FROM user WHERE email = ${req.params.email}`;
-  pool.query(q, (err, data) => {
-    if (err) return err;
-    if (data.length > 0) {
-      return res.json({ Status: "dup" });
-    } else {
-      return res.json({ Status: "no dup" });
-    }
-  });
+  const q = sql`SELECT * FROM user WHERE email = ${req.params.email}`;
+
+  pool
+    .query(q)
+    .then((data) => {
+      if (data.length > 0) {
+        return res.json({ Status: "dup" });
+      } else {
+        return res.json({ Status: "no dup" });
+      }
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /:email", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
 //Add the new user's shipping address
 router.post("/address", (req, res) => {
-  const q =
-    "INSERT INTO addresses (buyerID, country, streetAdd, aptNum, city, state, zip) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  const input = [
-    req.body.id,
-    req.body.country,
-    req.body.streetAdd,
-    req.body.aptNum,
-    req.body.city,
-    req.body.state,
-    req.body.zip,
-  ];
+  const q = sql`INSERT INTO addresses (buyerID, country, streetAdd, aptNum, city, state, zip) VALUES (${req.body.id}, ${req.body.country}, ${req.body.streetAdd}, ${req.body.aptNum}, ${req.body.city}, ${req.body.state}, ${req.body.zip})`;
 
-  pool.query(q, input, (err, data) => {
-    if (err) return res.json(err);
-    return res.status(200).json("user`s address successfully added");
-  });
+  pool
+    .query(q)
+    .then((data) => {
+      return res.status(200).json("user's address successfully added");
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /address", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
-//Log in operation
+// POST login
 router.post("/login", (req, res) => {
-  const q = "SELECT * FROM user WHERE email = ? AND password = ?";
-  const { email, password } = req.body;
-  const input = [email, password];
+  const q = sql`SELECT * FROM user WHERE email = ${req.body.email} AND password = ${req.body.password}`;
 
-  pool.query(q, input, (err, data) => {
-    if (err) return res.json(err);
-    if (data.length > 0) {
-      const buyerId = data[0].buyerID;
-      console.log("log in successful with", buyerId);
-      return res.json({ Status: "Success", id: buyerId });
-    } else {
-      return res.json({ Message: "Failed" });
-    }
-  });
+  pool
+    .query(q)
+    .then((data) => {
+      if (data.length > 0) {
+        const buyerId = data[0].buyerID;
+        console.log("log in successful with", buyerId);
+        return res.json({ Status: "Success", id: buyerId });
+      } else {
+        return res.json({ Message: "Failed" });
+      }
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /login", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
 /* GET buyer address */
 router.get("/address/:id", (req, res) => {
   console.log("getting id");
-  const { id } = req.params;
-  const q = `SELECT * FROM addresses WHERE buyerID = ${id}`;
+  const q = sql`SELECT * FROM addresses WHERE buyerID = ${req.params.id}`;
 
-  pool.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
+  pool
+    .query(q)
+    .then((data) => {
+      return res.json(data);
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /address/:id", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
 router.post("/address/:id", (req, res) => {
   console.log("updated");
-  const { id } = req.params;
   const { street, aptNumber, country, state, city, zipcode } = req.body;
   console.log(street, aptNumber, country, state, city, zipcode);
-  const q = `UPDATE addresses SET country = ?, streetAdd = ?, aptNum = ?, city = ?, state = ?, zip = ? WHERE buyerId = ?`;
+  const q = sql`UPDATE addresses SET country = ${country}, streetAdd = ${street}, aptNum = ${aptNumber}, city = ${city}, state = ${state}, zip = ${zipcode} WHERE buyerId = ${req.params.id}`;
 
-  pool.query(
-    q,
-    [country, street, aptNumber, city, state, zipcode, id],
-    (err, data) => {
-      if (err) return err;
+  pool
+    .query(q)
+    .then((data) => {
       return res.json(data);
-    }
-  );
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /address/:id", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
-//GET info of user
+// GET info of user
 router.get("/info/:id", (req, res) => {
-  const { id } = req.params;
-  const q = `SELECT * FROM buyer WHERE buyerId = ${id}`;
+  const q = sql`SELECT * FROM buyer WHERE buyerId = ${req.params.id}`;
 
-  pool.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data[0]);
-  });
+  pool
+    .query(q)
+    .then((data) => {
+      return res.json(data[0]);
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /info/:id", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
 /* GET cart */
 router.get("/:id/cart", (req, res) => {
-  // select cart and products from cart
-  const { id } = req.params;
-  const q = `SELECT * FROM cart LEFT JOIN products ON cart.productID = products.productID WHERE buyerID = ${id}`;
+  const q = sql`SELECT * FROM cart LEFT JOIN products ON cart.productID = products.productID WHERE buyerID = ${req.params.id}`;
 
-  pool.query(q, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
+  pool
+    .query(q)
+    .then((data) => {
+      return res.json(data);
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /:id/cart", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
-/*POST item to cart*/
+/* POST item to cart */
 router.post("/cart", (req, res) => {
-  // const { buyerId, productId } = ;
-  // console.log(req.body);
-  pool.query(
-    `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, ${req.body.amount}) ON DUPLICATE KEY UPDATE amount = ${req.body.amount}`,
-    (err, data) => {
-      if (err) return res.json(err);
+  const q = sql`INSERT INTO cart (buyerId, productId, amount) VALUES (${req.body.buyerId}, ${req.body.productId}, ${req.body.amount}) ON CONFLICT(buyerId, productId) do update set amount = ${req.body.amount}`;
+
+  pool
+    .query(q)
+    .then((data) => {
       return res.json(data);
-    }
-  );
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /cart", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
-// Delete from cart
+// DELETE from cart
 router.delete("/cart/:buyerId/:productId", (req, res) => {
-  pool.query(
-    `DELETE FROM cart where buyerId = ${req.params.buyerId} and productId = ${req.params.productId}`,
-    (err, data) => {
-      if (err) return res.json(err);
+  const q = sql`DELETE FROM cart WHERE buyerId = ${req.params.buyerId} AND productId = ${req.params.productId}`;
+
+  pool
+    .query(q)
+    .then((data) => {
       return res.json(data);
-    }
-  );
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /cart/:buyerId/:productId", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
-// Add to cart
+// PUT (update) cart
 router.put("/cart", (req, res) => {
-  pool.query(
-    `UPDATE cart set amount = ${req.body.amount} where buyerId = ${req.body.buyerId} and productId = ${req.body.productId}`,
-    (err, data) => {
-      if (err) return res.json(err);
+  const q = sql`UPDATE cart SET amount = ${req.body.amount} WHERE buyerId = ${req.body.buyerId} AND productId = ${req.body.productId}`;
+
+  pool
+    .query(q)
+    .then((data) => {
       return res.json(data);
-    }
-  );
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /cart", err);
+      return res.status(500).send("Internal Server Error");
+    });
 });
 
-// Total items in cart for one buyer
+// GET total items in cart for one buyer
 router.get("/definite/total/cart/:buyerID", (req, res) => {
-  console.log("total cart backend"); // should console log here :((((
-  pool.query(
-    `SELECT SUM(amount) AS sum FROM cart WHERE buyerID = ${req.params.buyerID}`,
-    (err, data) => {
-      if (err) return res.json(err);
-      return res.json(data);
-    }
-  );
-});
+  // console.log("total cart backend");
+  const q = sql`SELECT SUM(amount) AS sum FROM cart WHERE buyerID = ${req.params.buyerID}`;
 
+  pool
+    .query(q)
+    .then((data) => {
+      return res.json(data);
+    })
+    .catch((err) => {
+      console.error("SQL ERROR /definite/total/cart/:buyerID", err);
+      return res.status(500).send("Internal Server Error");
+    });
+});
 module.exports = router;
