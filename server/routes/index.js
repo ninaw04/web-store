@@ -1,10 +1,11 @@
 var express = require("express");
 var router = express.Router();
 var cors = require("cors");
-const { RouterSharp } = require("@mui/icons-material");
+const { sql } = require("@matteo.collina/sqlite-pool");
+
 router.use(cors());
 
-let pool = require("../database").pool;
+const pool = require("../database").pool;
 
 /* GET home page. */
 router.get("/", function (req, res, next) {

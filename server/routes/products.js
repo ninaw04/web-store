@@ -1,65 +1,76 @@
 var express = require("express");
 var router = express.Router();
+const { sql } = require("@matteo.collina/sqlite-pool");
 // var cors = require("cors");
 // router.use(cors());
 
 let pool = require("../database").pool;
 
+/* GET products */
 router.get("/", (req, res) => {
-    pool.query("SELECT * FROM products", function (err, result, fields) {
-      if (err) {
-        console.error("SQL ERROR /products");
-        return;
-      }
-      res.json(result);
-    });
+    const query = sql`select * from products;`;
+    pool
+      .query(query)
+      .then((results) => {
+        res.json(results);
+      })
+      .catch((err) => {
+        console.error("SQL ERROR GET /products", err);
+        res.status(500).send("Internal Server Error");
+      });
   });
   router.get("/product/:productId", (req, res) => {
     pool.query(
-      `SELECT * FROM products WHERE productId = ${req.params.productId}`,
-      function (err, result, fields) {
-        if (err) {
-          console.error("SQL ERROR products/:productId");
-          return;
-        }
-        res.json(result);
-      }
-    );
+      sql`SELECT * FROM products WHERE productId = ${req.params.productId}`).then(
+        (result) => res.json(result)
+      ).catch((err => {
+        console.error("SQL ERROR products/:productId");
+        return;
+      }))
   });
   
   //ASSUME THAT MINCOST AND MAXCOST ARE PROVIDED. By default they should be between 0 and the 1000 or something
   router.get("/filter/:min/:max", (req, res) => {
     if (req.params.min && req.params.max) {
       //if both minCost and maxCost are provided
-      pool.query(
-        `SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max}`,
-        function (err, result, fields) {
-          if (err) {
-            console.error("SQL ERROR /products/filter");
-            return;
-          }
-          console.log(result);
-          res.json(result);
-        }
-      );
+      pool
+        .query(
+          sql`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max}`
+        )
+        .then(
+          // if (err) {
+          //   console.error("SQL ERROR /products/filter");
+          //   return;
+          // }
+          (results) => res.json(results)
+        )
+        // console.log(result);
+        // res.json(result);
+        .catch((err) => {
+          console.error("SQL ERROR /products/filter");
+          res.status(500).send("Internal Server Error");
+        });
     }
     console.log(req.query);
   });
   
   router.get("/filter/:min/:max/:search", (req, res) => {
-    if (req.params.min && req.params.max && req.params.search) {
-      //if both minCost and maxCost are provided
-      pool.query(
-        `SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND productName LIKE '%${req.params.search}%'`,
-        function (err, result, fields) {
-          if (err) {
-            console.error("SQL ERROR /products/filter/:min/:max/:search");
-            return;
-          }
-          console.log(result);
-          res.json(result);
-        }
-      );
+    const { min, max, search } = req.params;
+    console.log("filter/min/max/search searched");
+  
+    if (min && max && search) {
+      const query = sql`SELECT * FROM products WHERE price BETWEEN ${min} AND ${max} AND productName LIKE ${`%${search}%`}`;
+      const params = [min, max, `%${search}%`];
+  
+      pool
+        .query(query)
+        .then((results) => res.json(results))
+        .catch((err) => {
+          console.error("SQL ERROR /products/filter/:min/:max/:search", err);
+          res.status(500).send("Internal Server Error");
+        });
+    } else {
+      res.status(400).send("Bad Request: Missing required parameters");
     }
   });
   
@@ -67,35 +78,33 @@ router.get("/", (req, res) => {
     console.log("sure");
     if (req.params.min && req.params.max && req.params.search) {
       //if both minCost and maxCost are provided
-      pool.query(
-        `SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND category LIKE '%${req.params.category}%' AND productName LIKE '%${req.params.search}%'`,
-        function (err, result, fields) {
-          if (err) {
-            console.error(
-              "SQL ERROR /products/filter/:min/:max/:category/:search"
-            );
-            return;
-          }
-          console.log(result);
-          res.json(result);
-        }
-      );
+  
+      pool
+        .query(
+          sql`SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND category LIKE ${`%${req.params.category}%`} AND productName LIKE ${`%${req.params.search}%`}`
+        )
+        .then((results) => res.json(results))
+        .catch((err) => {
+          console.error(
+            "SQL ERROR /products/filter/:min/:max/:category/:search",
+            err
+          );
+          res.status(500).send("Internal Server Error");
+        });
     }
   });
   
   router.get("/category/filter/:min/:max/:category", (req, res) => {
-    console.log("pls god");
-    pool.query(
-      `SELECT * FROM products WHERE price BETWEEN ${req.params.min} and ${req.params.max} AND category like '%${req.params.category}%'`,
-      function (err, result, fields) {
-        if (err) {
-          console.error("SQL ERROR filtering by category/:category");
-          return;
-        }
-        //console.log(result)
-        res.json(result);
-      }
-    );
+    console.log("filter/min/max/category searched");
+    const { min, max, category } = req.params;
+    const query = sql`SELECT * FROM products WHERE price BETWEEN ${min} and ${max} AND category like ${`%${category}%`}`;
+    pool
+      .query(query)
+      .then((results) => res.json(results))
+      .catch((err) => {
+        console.error("SQL ERROR filtering by category/:category", err);
+        return;
+      });
   });
   
   module.exports = router;
