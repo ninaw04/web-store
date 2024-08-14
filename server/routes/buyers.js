@@ -218,19 +218,6 @@ router.get("/:id/cart", (req, res) => {
   });
 });
 
-/*POST item to cart*/
-// router.post("/cart", (req, res) => {
-//   // const { buyerId, productId } = ;
-//   // console.log(req.body);
-//   pool.query(
-//     `INSERT INTO cart VALUES(${req.body.buyerId}, ${req.body.productId}, ${req.body.amount}) ON DUPLICATE KEY UPDATE amount = ${req.body.amount}`,
-//     (err, data) => {
-//       if (err) return res.json(err);
-//       return res.json(data);
-//     }
-//   );
-// });
-
 // Delete from cart
 router.delete("/cart/:buyerId/:productId", (req, res) => {
   pool.query(
@@ -241,17 +228,6 @@ router.delete("/cart/:buyerId/:productId", (req, res) => {
     }
   );
 });
-
-// Add to cart
-// router.put("/cart", (req, res) => {
-//   pool.query(
-//     `UPDATE cart set amount = ${req.body.amount} where buyerId = ${req.body.buyerId} and productId = ${req.body.productId}`,
-//     (err, data) => {
-//       if (err) return res.json(err);
-//       return res.json(data);
-//     }
-//   );
-// });
 
 // Total items in cart for one buyer
 router.get("/definite/total/cart/:buyerID", (req, res) => {

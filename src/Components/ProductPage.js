@@ -28,19 +28,23 @@ export default function ProductPage() {
       };
       var response;
 
-      if (search === "" && category !== "") { // CATEGORY ONLY
-        response = await fetch(
-          `http://localhost:3000/products/category/filter/${range[0]}/${range[1]}/${category}`
-        );
-      } else if (category !== "") { // CATEGORY AND SEARCH
-        response = await fetch(
-          `http://localhost:3000/products/filter/${range[0]}/${range[1]}/${category}/${search}`
-        );
-      } else { // SEARCH ONLY
-        response = await fetch(
-          `http://localhost:3000/products/filter/${range[0]}/${range[1]}/${search}`
-        );
-      }
+      response = await fetch(
+        `http://localhost:3000/products/filter?min=${range[0]}&max=${range[1]}&category=${category}&search=${search}`
+      );
+
+      // if (search === "" && category !== "") { // CATEGORY ONLY
+      //   response = await fetch(
+      //     `http://localhost:3000/products/category/filter/${range[0]}/${range[1]}/${category}`
+      //   );
+      // } else if (category !== "") { // CATEGORY AND SEARCH
+      //   response = await fetch(
+      //     `http://localhost:3000/products/filter/${range[0]}/${range[1]}/${category}/${search}`
+      //   );
+      // } else { // SEARCH ONLY
+      //   response = await fetch(
+      //     `http://localhost:3000/products/filter/${range[0]}/${range[1]}/${search}`
+      //   );
+      // }
 
       if (!response.ok) {
         const message = `An error occurred: ${response.statusText}`;
